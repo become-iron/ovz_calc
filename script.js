@@ -1,46 +1,33 @@
 var
 	inputs = [
-			['.D_max', '.pol', '.d_min', '+'],  // наибольшим предельным размером отверстия
-			['.d_min', '.D_max', '.pol', '-'],  // наименьшим предельным размером вала
-			['.pol',   '.D_max', '.d_min', '-']  	  // положительная разность между наибольшим предельным размером отверстия и наименьшим предельным размером вала, или между верхним отклонением отверстия и нижним отклонением вала
-	]
+             ['ES', 'Верхнее отклонение отверстия', 'Dmax', 'D', '-'],  // наибольшим предельным размером отверстия
+             ['Dmax', 'Наибольший предельный размер', 'ES', 'D', '+'],  // наименьшим предельным размером вала
+             ['D', 'Номинальный размер', 'Dmax', 'ES', '-']  	  // положительная разность между наибольшим предельным размером отверстия и наименьшим предельным размером вала, или между верхним отклонением отверстия и нижним отклонением вала
+			 ];
 
 
 $(document).ready(function(){
+    for (var i = 0; i < inputs.length; ++i){
+        $('table').append( $('<tr><td>' + inputs[i][0] + '</td><td><input value="" class="' + inputs[i][0] + '"></td><td>' + inputs[i][1] + '</td></tr>') );
+    }
+
 
 	function calculate(operand, operand2, operation){
-	// Принимает:
-	// -название первого поля
-	// -название второго поля
-	// -операция
-
-	return eval('parseInt($("' + operand + '").val())' + operation + 'parseInt($("' + operand2 + '").val())')
-	// return eval('$(.D_max).val()+$(.pol).val()')
+        // Принимает:
+        // -название первого поля
+        // -название второго поля
+        // -операция
+        console.log(eval('parseInt($(".' + operand + '").val())' + operation + 'parseInt($(".' + operand2 + '").val())'));
+        return eval('parseInt($(".' + operand + '").val())' + operation + 'parseInt($(".' + operand2 + '").val())');
 	}
 
-	// $(".reset").click(function(){
-	// 	// Кнопка сброса
-	// 	for (var key in inputs){
-	// 		$(key).val('');
-	// 	}
-	// });
 
  	$(".calc").click(function(){  // по клику по кнопке "Подсчитать"
- 		// $('.d_min').val('1234');
- 		// $('d_min').val(calculate('.D_max', '.pol', '+'))
- 		for (i = 0; i < inputs.length; ++i){
- 			if ($(inputs[i][0]).val() == ''){
- 				$(inputs[i][0]).val(calculate(inputs[i][1], inputs[i][2], inputs[i][3]));
+        //$('.' + inputs[0][0]).val(calculate(inputs[0][2], inputs[0][3], inputs[0][4]));
+ 		for (var i = 0; i < inputs.length; ++i){
+ 			if ($('.' + inputs[i][0]).val() == ''){
+ 				$('.' + inputs[i][0]).val(calculate(inputs[i][2], inputs[i][3], inputs[i][4]));
  			}
  		}
- 		// if (!($(param).attr("value"))){
- 		// 	$(param).attr("value", '1');
- 		// }
- 		// if (!($(".d_min").attr("value"))){
- 		// 	$(".d_min").attr("value", '2');
- 		// }
- 		// if (!($(".pol").attr("value"))){
- 		// 	$(".pol").attr("value", '3');
- 		// }
 	});
  });
