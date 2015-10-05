@@ -17,7 +17,6 @@ $(document).ready(function(){
         // -название первого поля
         // -название второго поля
         // -операция
-        console.log(eval('parseInt($(".' + operand + '").val())' + operation + 'parseInt($(".' + operand2 + '").val())'));
         return eval('parseInt($(".' + operand + '").val())' + operation + 'parseInt($(".' + operand2 + '").val())');
 	}
 
