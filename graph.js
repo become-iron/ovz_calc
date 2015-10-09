@@ -3,7 +3,7 @@ $(document).ready(function(){
     function calculate(operand){
         return operand
     }
-    $(".graph").click(function(){
+    $(".plot").click(function(){
         var drawingCanvas = document.getElementById('graph');
         if(drawingCanvas && drawingCanvas.getContext) {
             var context = drawingCanvas.getContext('2d');
