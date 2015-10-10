@@ -1,8 +1,21 @@
-.main{
-	
+.form{
+    margin-right: 50px;
+    float:left;
 }
-/*div{
-	box-sizing: content-box;
-	margin: 10px;
-	background-color: #123234;
-}*/
+
+.right{
+    float: left;
+}
+
+.graph{
+}
+
+#graph{
+    background-color: #ffe7ce;
+    /*width: 500px;*/
+    /*height: 500px;*/
+}
+
+.info{
+    background-color: #ffe7ce;
+}
