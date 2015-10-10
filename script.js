@@ -34,8 +34,10 @@ $(document).ready(function(){
     for (var i = 0; i < inputs.length; ++i){
         $('table').append( $('<tr><td>' + inputs[i][0] + '</td><td><input value="" class="' + inputs[i][0] + '"></td><td>' + inputs[i][1] + '</td></tr>') );
     }
+    $('table').append( $('<tr><td>Тип посадки:</td><td><div class="posadka">не определена</div></td><td></td></tr>') );
 
-	function calculate(expressions){
+
+    function calculate(expressions){
          /*
          ПОДСЧЁТ ЗНАЧЕНИЯ
          Принимает:
@@ -77,8 +79,9 @@ $(document).ready(function(){
         }
 	}
 
-    // клик по кнопке подсчёта
-    $("form").change(function(){
+
+    // просчёт значений
+    $("form").change(function() {
  	//$(".calc").click(function(){
         var fieldValue;  // значение поля
  		for (var i = 0; i < inputs.length; ++i) {
@@ -87,11 +90,18 @@ $(document).ready(function(){
  				$(fieldValue).val(calculate(inputs[i][2]));
  			}
  		}
+
+        // определение посадки
+        if ($('.Smin').val() == '0') {$('.posadka').text('скользящая посадка')}
+        if ($('.Nmin').val() == '0') {$('.posadka').text('легко прессовая посадка')}
+        if (($('.Smax').val() == $('.Nmax').val()) && $('.Smax').val()) {$('.posadka').text('переходная посадка')}
 	});
+
 
     // клик по кнопке сброса
     $('.reset').click(function(){
         $('.graph').css('visibility', 'hidden');
+        $('.posadka').text('не определена');
     });
 
     $(".plot").click(function() {
