@@ -1,22 +1,21 @@
 $(document).ready(function(){
 
-    function calculate(operand){
-        return operand
-    }
     $(".plot").click(function(){
         var drawingCanvas = document.getElementById('graph');
         if(drawingCanvas && drawingCanvas.getContext) {
             var context = drawingCanvas.getContext('2d');
             context.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-            context.font = "italic 10pt ISOCPEUR";
+            context.font = "italic 10pt arial";
 
-            //// Рисуем ось
+            dif = Number($('.Dmax').val());
+
+            //// Р РёСЃСѓРµРј РѕСЃСЊ
             //context.beginPath();
             //context.moveTo(0, 100);
             //context.lineTo(500, 100);
             //context.stroke();
 
-            // Рисуем отверстие
+            // Р РёСЃСѓРµРј РѕС‚РІРµСЂСЃС‚РёРµ
             context.strokeStyle = "#000";
             context.fillStyle = "#ffff99";
             context.beginPath();
@@ -25,61 +24,73 @@ $(document).ready(function(){
             context.stroke();
             context.fill();
 
-            // Рисуем вал
+            // Р РёСЃСѓРµРј РІР°Р»
             context.strokeStyle = "#000";
             context.fillStyle = "#999999";
             context.beginPath();
-            context.rect(200, 100 + Number($('.Dmax').val()), 50, 50);
+            context.rect(200, 100 + dif, 50, 50);
             context.closePath();
             context.stroke();
             context.fill();
 
-            //Рисуем линию ES
+            //Р РёСЃСѓРµРј Р»РёРЅРёСЋ ES
             context.beginPath();
-            context.moveTo(100 - 25, 100);
+            context.moveTo(25, 100);
             context.lineTo(300, 100);
             context.fillStyle = "red";
             context.fillText("ES", 100 - 25, 100 - 2);
             context.stroke();
 
-            //Рисуем линию EI
+            //Р РёСЃСѓРµРј Р»РёРЅРёСЋ EI
             context.beginPath();
-            context.moveTo(100 - 25, 100 + 50);
+            context.moveTo(25, 100 + 50);
             context.lineTo(300, 100 + 50);
             context.fillStyle = "red";
             context.fillText("EI", 100 - 25, 100 + 50 - 2);
             context.stroke();
 
-            //Рисуем линию Em
+            //Р РёСЃСѓРµРј Р»РёРЅРёСЋ Em
             context.beginPath();
-            context.moveTo(100 - 25, 100 + 50/2);
+            context.moveTo(25, 100 + 50/2);
             context.lineTo(300, 100 + 50/2);
             context.fillStyle = "red";
             context.fillText("Em", 100 - 25, 100 + 50/2 - 2);
             context.stroke();
 
-            //Рисуем линию es
+            //Р РёСЃСѓРµРј Р»РёРЅРёСЋ es
             context.beginPath();
-            context.moveTo(200 - 25, 100 + Number($('.Dmax').val()));
-            context.lineTo(300, 100 + Number($('.Dmax').val()));
+            context.moveTo(25, 100 + dif);
+            context.lineTo(300, 100 + dif);
             context.fillStyle = "red";
-            context.fillText("es", 200 - 25, 100 + Number($('.Dmax').val()) - 2);
+            context.fillText("es", 200 - 25, 100 + dif - 2);
             context.stroke();
 
-            //Рисуем линию ei
+            //Р РёСЃСѓРµРј Р»РёРЅРёСЋ ei
             context.beginPath();
-            context.moveTo(200 - 25, 100 + Number($('.Dmax').val()) + 50);
-            context.lineTo(300, 100 + Number($('.Dmax').val()) + 50);
+            context.moveTo(25, 100 + dif + 50);
+            context.lineTo(300, 100 + dif + 50);
             context.fillStyle = "red";
-            context.fillText("ei", 200 - 25, 100 + Number($('.Dmax').val()) + 50 - 2);
+            context.fillText("ei", 200 - 25, 100 + dif + 50 - 2);
             context.stroke();
 
-            //Рисуем линию em
+            //Р РёСЃСѓРµРј Р»РёРЅРёСЋ em
             context.beginPath();
-            context.moveTo(200 - 25, 100 + Number($('.Dmax').val()) + 50/2);
-            context.lineTo(300, 100 + Number($('.Dmax').val()) + 50/2);
+            context.moveTo(25, 100 + dif + 50/2);
+            context.lineTo(300, 100 + dif + 50/2);
             context.fillStyle = "red";
-            context.fillText("em", 200 - 25, 100 + Number($('.Dmax').val()) + 50/2 - 2);
+            context.fillText("em", 200 - 25, 100 + dif + 50/2 - 2);
+            context.stroke();
+
+            // Р РёСЃСѓРµРј РѕСЃСЊ y
+            context.beginPath();
+            context.moveTo(25, 0);
+            context.lineTo(25, 500);
+            context.stroke();
+
+            // Р РёСЃСѓРµРј РґРµР»РµРЅРёСЏ РЅР° РѕСЃРё y
+            context.fillStyle = "red";
+            context.textAlign = "right";
+            context.fillText(dif, 22, 100);
             context.stroke();
         }
     });
