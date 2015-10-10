@@ -32,7 +32,6 @@ var
 $(document).ready(function(){
     // генерация полей
     for (var i = 0; i < inputs.length; ++i){
-        //if (!(inputs[i][0])) continue; // TEMP
         $('table').append( $('<tr><td>' + inputs[i][0] + '</td><td><input value="" class="' + inputs[i][0] + '"></td><td>' + inputs[i][1] + '</td></tr>') );
     }
 
@@ -54,7 +53,6 @@ $(document).ready(function(){
             for (var j = 0; j < sequence.length; j++) {
                 // если символ, переходим на новую итерацию
                 sym = sequence[j];
-                console.log(sequence);
                 if (sym == '=' || sym == '+' || sym == '-' || sym == '/' || sym == '(' || sym == ')' || sym == '' || sym == '2') {
                     continue;
                 }
@@ -70,15 +68,11 @@ $(document).ready(function(){
             if (marker == 0) {break}
         }
         if (marker == 1) {
-            //console.log('PYSCH', sequence);
             return '';
         }
         else {
-            console.log('PYSCH2', sequence);
             sequence = sequence.join('');  // сливаем выражение в одно строку
-            console.log('PYSCH3', sequence);
             sequence = eval(sequence);
-            console.log('PYSCH4', sequence);
             return sequence;
         }
 
@@ -94,21 +88,22 @@ $(document).ready(function(){
     // клик по кнопке подсчёта
  	$(".calc").click(function(){
         var fieldValue;  // значение поля
- 		for (var i = 0; i < inputs.length; ++i){
-            //if (!(inputs[i][0])) continue; // TEMP
+ 		for (var i = 0; i < inputs.length; ++i) {
             fieldValue = '.' + inputs[i][0];
- 			if ($(fieldValue).val() == ''){
+ 			if ($(fieldValue).val() == '') {
  				$(fieldValue).val(calculate(inputs[i][2]));
  			}
  		}
 	});
 
-    //// клик по кнопке сброса
-    //$('.reset').click(function(){
-    //   $('#graph').attr('style', '{visibility:hidden;}')
-    //});
-    //
-    //$(".plot").click(function() {
-    //    $('#graph').attr('style', '{visibility:visible;}');
-    //});
+    // клик по кнопке сброса
+    $('.reset').click(function(){
+        $('#graph').css('visibility', 'hidden');
+        $('.graph').css('visibility', 'hidden');
+    });
+
+    $(".plot").click(function() {
+        $('#graph').css('visibility', 'visible');
+        $('.graph').css('visibility', 'visible');
+    });
  });
