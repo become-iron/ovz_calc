@@ -75,18 +75,11 @@ $(document).ready(function(){
             sequence = eval(sequence);
             return sequence;
         }
-
-        //if (!(operand && operand2)) return '';
-        //operand = $('.' + operand).val();
-        //operand2 = $('.' + operand2).val();
-        //if (operand && operand2) {  // если имеются данные для совершения операции
-        //    return eval('parseInt(' + operand + ')' + operation + 'parseInt(' + operand2 + ')');
-        //}
-        //else return ''
 	}
 
     // клик по кнопке подсчёта
- 	$(".calc").click(function(){
+    $("form").change(function(){
+ 	//$(".calc").click(function(){
         var fieldValue;  // значение поля
  		for (var i = 0; i < inputs.length; ++i) {
             fieldValue = '.' + inputs[i][0];
@@ -98,12 +91,10 @@ $(document).ready(function(){
 
     // клик по кнопке сброса
     $('.reset').click(function(){
-        $('#graph').css('visibility', 'hidden');
         $('.graph').css('visibility', 'hidden');
     });
 
     $(".plot").click(function() {
-        $('#graph').css('visibility', 'visible');
         $('.graph').css('visibility', 'visible');
     });
  });
