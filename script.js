@@ -37,6 +37,7 @@ $(document).ready(function(){
         $('table').append( $('<tr><td>' + inputs[i][0] + '</td><td><input value="" class="' + inputs[i][0] + '"></td><td>' + inputs[i][1] + '</td><td>' +  inputs[i][2] +'</td></tr>') );
     }
     $('table').append( $('<tr><td>Тип посадки:</td><td><div class="fit">не определена</div></td><td></td></tr>') );
+    $('table').append( $('<tr><td>Система:</td><td><div class="sys_fit">не определена</div></td><td></td></tr>') );
 
 
     function calculate(expressions){
@@ -95,7 +96,18 @@ $(document).ready(function(){
 
 
         // определение системы (отверстия или вала)
-
+        var ES = $('.ES').val(),
+            EI = $('.EI').val(),
+            es = $('.es').val(),
+            ei = $('.ei').val();
+        if (ES && EI && es && ei) {
+            if (Math.abs(Math.abs(ES) - Math.abs(EI)) < Math.abs(Math.abs(es) - Math.abs(ei))) {
+                $('.sys_fit').text('отверстия')
+            }
+            else {
+                $('.sys_fit').text('вала')
+            }
+        }
     }
 
 
@@ -111,6 +123,7 @@ $(document).ready(function(){
     $('.reset').click(function(){
         $('.graph').css('visibility', 'hidden');
         $('.fit').text('не определена');
+        $('.sys_fit').text('не определена');
     });
 
     $(".plot").click(function() {
