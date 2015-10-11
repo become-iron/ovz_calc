@@ -10,7 +10,7 @@
 3. В качестве разделителя для дробных чисел следует использовать точку
 
 ### Скриншот
-!Калькулятор ОВЗ]("/stuff/screenshot.png")
+![Калькулятор ОВЗ]("/stuff/screenshot.png")
 
 ### Создатели
 * [become-iron](https://github.com/become-iron)
