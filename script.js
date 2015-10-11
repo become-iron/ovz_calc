@@ -94,20 +94,9 @@ $(document).ready(function(){
         if ($('.Nmin').val() == '0') {$('.fit').text('легко прессовая посадка')}
         if (($('.Smax').val() == $('.Nmax').val()) && $('.Smax').val()) {$('.fit').text('переходная посадка')}
 
-
         // определение системы (отверстия или вала)
-        var ES = $('.ES').val(),
-            EI = $('.EI').val(),
-            es = $('.es').val(),
-            ei = $('.ei').val();
-        if (ES && EI && es && ei) {
-            if (Math.abs(Math.abs(ES) - Math.abs(EI)) < Math.abs(Math.abs(es) - Math.abs(ei))) {
-                $('.sys_fit').text('отверстия')
-            }
-            else {
-                $('.sys_fit').text('вала')
-            }
-        }
+        if ($('.EI').val() == '0') {$('.sys_fit').text('отверстия')}
+        else if ($('.es').val() == '0') {$('.sys_fit').text('вала')}
     }
 
 
