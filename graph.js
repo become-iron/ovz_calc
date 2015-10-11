@@ -7,6 +7,16 @@ $(document).ready(function(){
             context.font = "italic 8pt arial";
             context.textAlign = "right";
 
+            if (Number($('.ES').val()) != 0 || Number($('.es').val()) != 0) {
+                dif = Number($('.ES').val()) - Number($('.es').val());
+            }
+            else if (Number($('.EI').val()) != 0 || Number($('.ei').val()) != 0) {
+                dif = Number($('.EI').val()) - Number($('.ei').val());
+            }
+            else if (Number($('.Em').val()) != 0 || Number($('.em').val()) != 0) {
+                dif = Number($('.Em').val()) - Number($('.em').val());
+            } else dif = 0;
+
             TD = Number($('.TD').val());
             Td = Number($('.Td').val());
 
@@ -20,18 +30,9 @@ $(document).ready(function(){
                         DopD = 2 * DopD;
                         i = i * 2;
                     }
+                    dif = i*dif;
                 }
             }
-
-            if (Number($('.ES').val()) != 0 || Number($('.es').val()) != 0) {
-                dif = Number($('.ES').val()) - Number($('.es').val());
-            }
-            else if (Number($('.EI').val()) != 0 || Number($('.ei').val()) != 0) {
-                dif = Number($('.EI').val()) - Number($('.ei').val());
-            }
-            else if (Number($('.Em').val()) != 0 || Number($('.em').val()) != 0) {
-                dif = Number($('.Em').val()) - Number($('.em').val());
-            } else dif = 0;
 
 
             // Рисуем отверстие
@@ -80,51 +81,24 @@ $(document).ready(function(){
             context.fillText("ES", 100 - 3, 100 - 2);
             context.stroke();
 
+            //Рисуем линию EI
+            context.beginPath();
             if (TD != 0 && Td != 0) {
                 if (TD < 20 || Td < 20) {
-                    //Рисуем линию EI
-                    context.beginPath();
                     context.moveTo(50, 100 + i*TD);
                     context.lineTo(200, 100 + i*TD);
                     context.fillText("EI", 100 - 3, 100 + i*TD - 2);
-                    context.stroke();
-
-                    //Рисуем линию Em
-                    context.beginPath();
-                    context.moveTo(50, 100 + i*TD / 2);
-                    context.lineTo(200, 100 + i*TD / 2);
-                    context.fillText("Em", 100 - 3, 100 + i*TD / 2 - 2);
-                    context.stroke();
                 } else{
-                    //Рисуем линию EI
-                    context.beginPath();
                     context.moveTo(50, 100 + TD);
                     context.lineTo(200, 100 + TD);
                     context.fillText("EI", 100 - 3, 100 + TD - 2);
-                    context.stroke();
-
-                    //Рисуем линию Em
-                    context.beginPath();
-                    context.moveTo(50, 100 + TD / 2);
-                    context.lineTo(200, 100 + TD / 2);
-                    context.fillText("Em", 100 - 3, 100 + TD / 2 - 2);
-                    context.stroke();
                 }
             } else {
-                //Рисуем линию EI
-                context.beginPath();
                 context.moveTo(50, 100 + 50);
                 context.lineTo(200, 100 + 50);
                 context.fillText("EI", 100 - 3, 100 + 50 - 2);
-                context.stroke();
-
-                //Рисуем линию Em
-                context.beginPath();
-                context.moveTo(50, 100 + 50 / 2);
-                context.lineTo(200, 100 + 50 / 2);
-                context.fillText("Em", 100 - 3, 100 + 50 / 2 - 2);
-                context.stroke();
             }
+            context.stroke();
 
             context.textAlign = "left";
 
@@ -135,49 +109,175 @@ $(document).ready(function(){
             context.fillText("es", 250 + 3, 100 + dif - 2);
             context.stroke();
 
+            //Рисуем линию ei
+            context.beginPath();
             if (TD != 0 && Td != 0) {
                 if (TD < 20 || Td < 20) {
-                    //Рисуем линию ei
-                    context.beginPath();
                     context.moveTo(150, 100 + dif + i*Td);
                     context.lineTo(300, 100 + dif + i*Td);
                     context.fillText("ei", 250 + 3, 100 + dif + i*Td - 2);
-                    context.stroke();
-
-                    //Рисуем линию em
-                    context.beginPath();
-                    context.moveTo(150, 100 + dif + i*Td / 2);
-                    context.lineTo(300, 100 + dif + i*Td / 2);
-                    context.fillText("em", 250 + 3, 100 + dif + i*Td / 2 - 2);
-                    context.stroke();
                 } else{
-                    //Рисуем линию ei
-                    context.beginPath();
                     context.moveTo(150, 100 + dif + Td);
                     context.lineTo(300, 100 + dif + Td);
                     context.fillText("ei", 250 + 3, 100 + dif + Td - 2);
-                    context.stroke();
-
-                    //Рисуем линию em
-                    context.beginPath();
-                    context.moveTo(150, 100 + dif + Td / 2);
-                    context.lineTo(300, 100 + dif + Td / 2);
-                    context.fillText("em", 250 + 3, 100 + dif + Td / 2 - 2);
-                    context.stroke();
                 }
             } else {
-                //Рисуем линию ei
-                context.beginPath();
                 context.moveTo(150, 100 + dif + 50);
                 context.lineTo(300, 100 + dif + 50);
                 context.fillText("ei", 250 + 3, 100 + dif + 50 - 2);
-                context.stroke();
+            }
+            context.stroke();
 
-                //Рисуем линию em
+
+            //Рисуем линию Smax (от ES до ei)
+            if (Number($('.Smax').val()) >= 0) {
                 context.beginPath();
-                context.moveTo(150, 100 + dif + 50 / 2);
-                context.lineTo(300, 100 + dif + 50 / 2);
-                context.fillText("em", 250 + 3, 100 + dif + 50 / 2 - 2);
+                context.moveTo(180, 100);
+                context.lineTo(180, 100 + 250);
+                context.fillText("Smax = " + $('.Smax').val(), 180 + 2, 100 + 250);
+                //Стрелочка верхняя
+                context.moveTo(180, 100);
+                context.lineTo(180 + 2, 100 + 5);
+                context.moveTo(180, 100);
+                context.lineTo(180 - 2, 100 + 5);
+                //Стрелочка нижняя
+                if (TD != 0 && Td != 0) {
+                    if (TD < 20 || Td < 20) {
+                        context.moveTo(180, 100 + dif + i*Td);
+                        context.lineTo(180 + 2, 100 + dif + i*Td - 5);
+                        context.moveTo(180, 100 + dif + i*Td);
+                        context.lineTo(180 - 2, 100 + dif + i*Td - 5);
+                    } else {
+                        context.moveTo(180, 100 + dif + Td);
+                        context.lineTo(180 + 2, 100 + dif + Td - 5);
+                        context.moveTo(180, 100 + dif + Td);
+                        context.lineTo(180 - 2, 100 + dif + Td - 5);
+                    }
+                } else {
+                    context.moveTo(180, 100 + dif + 50);
+                    context.lineTo(180 + 2, 100 + dif + 50 - 5);
+                    context.moveTo(180, 100 + dif + 50);
+                    context.lineTo(180 - 2, 100 + dif + 50 - 5);
+                }
+                context.stroke();
+            }
+
+
+            //Рисуем линию Smin (от EI до es)
+            if (Number($('.Smin').val()) >= 0) {
+                context.beginPath();
+                if (TD != 0 && Td != 0) {
+                    if (TD < 20 || Td < 20) {
+                        context.moveTo(185, 100 + i*TD);
+                    } else {
+                        context.moveTo(185, 100 + TD);
+                    }
+                } else {
+                    context.moveTo(185, 100 + 50);
+                }
+                context.lineTo(185, 100 + 225);
+                context.fillText("Smin = " + $('.Smin').val(), 185 + 2, 100 + 225);
+                //Стрелочка верхняя
+                if (TD != 0 && Td != 0) {
+                    if (TD < 20 || Td < 20) {
+                        context.moveTo(185, 100 + i*TD);
+                        context.lineTo(185 + 2, 100 + i*TD + 5);
+                        context.moveTo(185, 100 + i*TD);
+                        context.lineTo(185 - 2, 100 + i*TD + 5);
+                    } else{
+                        context.moveTo(185, 100 + TD);
+                        context.lineTo(185 + 2, 100 + TD + 5);
+                        context.moveTo(185, 100 + TD);
+                        context.lineTo(185 - 2, 100 + TD + 5);
+                    }
+                } else {
+                    context.moveTo(185, 100 + 50);
+                    context.lineTo(185 + 2, 100 + 50 + 5);
+                    context.moveTo(185, 100 + 50);
+                    context.lineTo(185 - 2, 100 + 50 + 5);
+                }
+                //Стрелочка нижняя
+                context.moveTo(185, 100 + dif);
+                context.lineTo(185 + 2, 100 + dif - 5);
+                context.moveTo(185, 100 + dif);
+                context.lineTo(185 - 2, 100 + dif - 5);
+                context.stroke();
+            }
+
+            context.textAlign = "right";
+
+            //Рисуем линию Nmax (от es до EI)
+            if (Number($('.Nmax').val()) >= 0) {
+                context.beginPath();
+                context.moveTo(170, 100 + dif);
+                context.lineTo(170, 100 + 250);
+                context.fillText("Nmax = " + $('.Nmax').val(), 170 - 3, 100 + 250);
+                //Стрелочка верхняя
+                context.moveTo(170, 100 + dif);
+                context.lineTo(170 + 2, 100 + dif + 5);
+                context.moveTo(170, 100 + dif);
+                context.lineTo(170 - 2, 100 + dif + 5);
+                //Стрелочка нижняя
+                if (TD != 0 && Td != 0) {
+                    if (TD < 20 || Td < 20) {
+                        context.moveTo(170, 100 + i*TD);
+                        context.lineTo(170 + 2, 100 + i*TD - 5);
+                        context.moveTo(170, 100 + i*TD);
+                        context.lineTo(170 - 2, 100 + i*TD - 5);
+                    } else{
+                        context.moveTo(170, 100 + TD);
+                        context.lineTo(170 + 2, 100 + TD - 5);
+                        context.moveTo(170, 100 + TD);
+                        context.lineTo(170 - 2, 100 + TD - 5);
+                    }
+                } else {
+                    context.moveTo(170, 100 + 50);
+                    context.lineTo(170 + 2, 100 + 50 - 5);
+                    context.moveTo(170, 100 + 50);
+                    context.lineTo(170 - 2, 100 + 50 - 5);
+                }
+                context.stroke();
+            }
+
+
+            //Рисуем линию Nmin (от ei до ES)
+            if (Number($('.Nmin').val()) >= 0) {
+                context.beginPath();
+                if (TD != 0 && Td != 0) {
+                    if (TD < 20 || Td < 20) {
+                        context.moveTo(165, 100 + dif + i*Td);
+                    } else {
+                        context.moveTo(165, 100 + dif + Td);
+                    }
+                } else {
+                    context.moveTo(165, 100 + dif + 50);
+                }
+                context.lineTo(165, 100 + 225);
+                context.fillText("Nmin = " + $('.Nmin').val(), 165 + 3, 100 + 225);
+                //Стрелочка верхняя
+                if (TD != 0 && Td != 0) {
+                    if (TD < 20 || Td < 20) {
+                        context.moveTo(165, 100 + dif + i*Td);
+                        context.lineTo(165 + 2, 100 + dif + i*Td + 5);
+                        context.moveTo(165, 100 + dif + i*Td);
+                        context.lineTo(165 - 2, 100 + dif + i*Td + 5);
+                    } else {
+                        context.moveTo(165, 100 + dif + Td);
+                        context.lineTo(165 + 2, 100 + dif + Td + 5);
+                        context.moveTo(165, 100 + dif + Td);
+                        context.lineTo(165 - 2, 100 + dif + Td + 5);
+                    }
+                } else {
+                    context.moveTo(165, 100 + dif + 50);
+                    context.lineTo(165 + 2, 100 + dif + 50 + 5);
+                    context.moveTo(165, 100 + dif + 50);
+                    context.lineTo(165 - 2, 100 + dif + 50 + 5);
+                }
+                //Стрелочка нижняя
+                context.moveTo(165, 100);
+                context.lineTo(165 + 2, 100 - 5);
+                context.moveTo(165, 100);
+                context.lineTo(165 - 2, 100 - 5);
                 context.stroke();
             }
 
@@ -192,14 +292,32 @@ $(document).ready(function(){
 
             // Рисуем деления на оси y
             context.fillStyle = "blue";
+
             context.textAlign = "right";
             context.fillText($('.ES').val(), 47, 100 + 4);
-            context.fillText($('.EI').val(), 47, 100 + 50 + 4);
-            context.fillText($('.Em').val(), 47, 100 + 50 / 2 + 4);
+            if (TD != 0 && Td != 0) {
+                if (TD < 20 || Td < 20) {
+                    context.fillText($('.EI').val(), 47, 100 + i*TD + 4);
+                } else {
+                    context.fillText($('.EI').val(), 47, 100 + TD + 4);
+                }
+            } else {
+                context.fillText($('.EI').val(), 47, 100 + 50 + 4);
+            }
+            //context.fillText($('.Em').val(), 47, 100 + 50 / 2 + 4);
+
             context.textAlign = "left";
             context.fillText($('.es').val(), 302, 100 + dif + 4);
-            context.fillText($('.ei').val(), 302, 100 + dif + 50 + 4);
-            context.fillText($('.em').val(), 302, 100 + dif + 50 / 2 + 4);
+            if (TD != 0 && Td != 0) {
+                if (TD < 20 || Td < 20) {
+                    context.fillText($('.ei').val(), 302, 100 + dif + i*Td + 4);
+                } else {
+                    context.fillText($('.ei').val(), 302, 100 + dif + Td + 4);
+                }
+            } else {
+                context.fillText($('.ei').val(), 302, 100 + dif + 50 + 4);
+            }
+            //context.fillText($('.em').val(), 302, 100 + dif + 50 / 2 + 4);
 
 
             // Рисуем допуски
