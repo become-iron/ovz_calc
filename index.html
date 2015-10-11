@@ -14,7 +14,7 @@
                         <td><input type="button" value="Посчитать" class="btn calc"></td>
                         <td><input type="reset" value="Сбросить всё" class="btn reset"></td>
                         <td><input type="checkbox" id="check"><label for="check">Обновлять автоматически</label></td>
-                        <td><input type="button" value="Построить схему" class="btn plot"></td>
+                        <td><input type="button" value="Показать/скрыть схему" class="btn plot"></td>
                     </tr>
                 </table>
             </form>
@@ -22,8 +22,11 @@
         <div class="right">
             <div class="info">
                 <b>Справочная информация</b><br>
-                1. Верность подсчёта гарантируется верностью введённых данных<br>
-                2. При изменении значений в полях не происходит перерасчёт<br>
+                <ul>
+                    <li>Верность подсчёта гарантируется верностью введённых данных</li>
+                    <li>При изменении значений в полях не происходит перерасчёт</li>
+                    <li>В качестве разделителя для дробных чисел следует использовать точку</li>
+                </ul>
             </div>
             <div class="graph">
                 <canvas id="graph" width="350" height="500"></canvas>

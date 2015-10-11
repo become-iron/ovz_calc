@@ -1,5 +1,5 @@
 .form{
-    margin-right: 30px;
+    margin-right: 15px;
     float:left;
 }
 
@@ -7,14 +7,27 @@
     float: left;
 }
 
+.info{
+    background-color: #d9ebf2;
+    padding: 10px;
+}
+
 .graph{
     visibility: hidden;
+    background-color: #ffe7ce;
+    margin-top: 15px;
+    padding: 10px;
 }
 
 #graph{
-    background-color: #ffe7ce;
 }
 
-.info{
-    background-color: #ffe7ce;
+ul{
+    list-style-type: decimal;
+    padding-left: 15px;
+    margin: 0;
+}
+
+td{
+    padding-right: 5px;
 }

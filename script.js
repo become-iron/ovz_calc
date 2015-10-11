@@ -31,9 +31,7 @@ var
 
 $(document).ready(function(){
     // генерация полей
-    //var mera;
     for (var i = 0; i < inputs.length; ++i){
-        //(inputs[i][0] ==    )
         $('table').append( $('<tr><td>' + inputs[i][0] + '</td><td><input value="" class="' + inputs[i][0] + '"></td><td>' + inputs[i][1] + '</td><td>' +  inputs[i][2] +'</td></tr>') );
     }
     $('table').append( $('<tr><td>Тип посадки:</td><td><div class="fit">не определена</div></td><td></td></tr>') );
@@ -42,7 +40,7 @@ $(document).ready(function(){
 
     function calculate(expressions){
          /*
-         ПОДСЧЁТ ЗНАЧЕНИЯ
+         ПОДСЧЁТ ЗНАЧЕНИЯ ВЫРАЖЕНИЯ
          Принимает:
             expressions (massive) математическое выражение
          Возвращает:
@@ -75,7 +73,7 @@ $(document).ready(function(){
         }
         else {
             sequence = sequence.join('');  // сливаем выражение в одно строку
-            sequence = eval(sequence)/1000;
+            sequence = eval(sequence) / 1000;
             return sequence;
         }
 	}
@@ -116,6 +114,11 @@ $(document).ready(function(){
     });
 
     $(".plot").click(function() {
-        $('.graph').css('visibility', 'visible');
+        if ($('.graph').css('visibility') == 'hidden') {
+            $('.graph').css('visibility', 'visible');
+        }
+        else {
+            $('.graph').css('visibility', 'hidden');
+        }
     });
  });
