@@ -20,5 +20,5 @@
 * мобильное приложение
 
 ### Создатели
-* [become-iron](https://github.com/become-iron)
-* [Alex1166](https://github.com/Alex1166)
+* [become-iron](http://github.com/become-iron)
+* [Alex1166](http://github.com/Alex1166)
