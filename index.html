@@ -1,39 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
     <link href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABmElEQVQ4jYWSoVLkQBCGW6w4sQJxgipOICORJ1aMXCbdO3+2Nm/AA5zYB8AhEXhOIKgKyXSofYAVKIoCxD0AdbUCgUAgECuC2CQkuSzXVWOm6/vyd0+IOhUqfonitHtPRBQn8dAmdrevR0RE1k/GrChYUTQlcRIPWXHGioJzd9ILjxX7rHisBKxYW8UBERFnOO5KW2WWZtCB38RHXPVZ8cqKwvrJuLoTH40kk5+bub2bN+BCMnfU/EAl4NxdykK+i49GrHjjzM2q+V44d++iuGDFmhVrztyMiMgmdrcWVCd376xYQbFDVnFQQmYzr5tVkjLZqgVvzmMdvxQsWpE/JTUUejeXVALx0cgszaD9fOW26wWlErDipSF4lVSC3hfoVuijKSseemLfcu7sl3C93U9owbl7bizveWsSVpgWnEdXZmkGkkrwX4nk7ogVfxvwOS/ivXqsbBKK4q6R7D68nk6IqP6FV6HiqWzexEk8/Ge8niSH2fQHiQKsuGGFboO3SULv5mR+m2+iOOUMx1/BLYniT6h4klSCDzghO5zjxNIwAAAAAElFTkSuQmCC" rel="icon" type="image/x-icon">
-	<title>Калькулятор ОВЗ. Допуски и посадки</title>
+    <title>Калькулятор ОВЗ. Допуски и посадки</title>
 </head>
 <body>
-	<div class="main">
-        <div class="form">
-            <form>
-                <table>
-                    <tr>
-                        <td><input type="button" value="Посчитать" class="btn calc"></td>
-                        <td><input type="reset" value="Сбросить всё" class="btn reset"></td>
-                        <td><input type="checkbox" id="check"><label for="check">Обновлять автоматически</label></td>
-                        <td><input type="button" value="Показать/скрыть схему" class="btn plot"></td>
-                    </tr>
-                </table>
-            </form>
+<div class="main">
+    <div class="form">
+        <form>
+            <table>
+                <tr>
+                    <td><input type="button" value="Посчитать" class="btn calc"></td>
+                    <td><input type="reset" value="Сбросить всё" class="btn reset"></td>
+                    <td><input type="checkbox" id="check"><label for="check">Обновлять автоматически</label></td>
+                    <td><input type="button" value="Показать/скрыть схему" class="btn plot"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="right">
+        <div class="info">
+            <b>Справочная информация</b><br>
+            <ul>
+                <li>Верность подсчёта гарантируется верностью введённых данных</li>
+                <li>При изменении значений в полях не происходит перерасчёт</li>
+                <li>В качестве разделителя для дробных чисел следует использовать точку</li>
+                <li>Выведены не все формулы, т.о. калькулятор не сможет просчить все значения</li>
+                <li>Создатели не несут никакой ответственности за верность работы</li>
+            </ul>
         </div>
-        <div class="right">
-            <div class="info">
-                <b>Справочная информация</b><br>
-                <ul>
-                    <li>Верность подсчёта гарантируется верностью введённых данных</li>
-                    <li>При изменении значений в полях не происходит перерасчёт</li>
-                    <li>В качестве разделителя для дробных чисел следует использовать точку</li>
-                </ul>
-            </div>
-            <div class="graph">
-                <canvas id="graph" width="350" height="500"></canvas>
-            </div>
+        <div class="graph">
+            <canvas id="graph" width="350" height="500"></canvas>
         </div>
-	</div>
+    </div>
+</div>
 
 <script src="jquery-2.1.4.min.js"></script>
 <script src="script.js"></script>
