@@ -32,10 +32,10 @@ var
 $(document).ready(function(){
     // генерация полей
     for (var i = 0; i < inputs.length; ++i){
-        $('table').append( $('<tr><td>' + inputs[i][0] + '</td><td><input value="" class="' + inputs[i][0] + '"></td><td>' + inputs[i][1] + '</td><td>' +  inputs[i][2] +'</td></tr>') );
+        $('table').append( $('<tr><td>' + inputs[i][0] + '</td><td><input value="" class="field ' + inputs[i][0] + '"></td><td>' + inputs[i][1] + '</td><td>' +  inputs[i][2] +'</td></tr>') );
     }
-    $('table').append( $('<tr><td>Тип посадки:</td><td><div class="fit">не определена</div></td><td></td></tr>') );
-    $('table').append( $('<tr><td>Система:</td><td><div class="sys_fit">не определена</div></td><td></td></tr>') );
+    $('table').append( $('<tr><td>Посадка:</td><td><div class="fit">неизвестна</div></td><td></td></tr>') );
+    $('table').append( $('<tr><td>Система:</td><td><div class="sys_fit">неизвестна</div></td><td></td></tr>') );
 
 
     function calculate(expressions){
@@ -88,9 +88,9 @@ $(document).ready(function(){
         }
 
         // определение посадки
-        if ($('.Smin').val() == '0') {$('.fit').text('скользящая посадка')}
-        else if ($('.Nmin').val() == '0') {$('.fit').text('легко прессовая посадка')}
-        else if (($('.Smax').val() == $('.Nmax').val()) && $('.Smax').val()) {$('.fit').text('переходная посадка')}
+        if ($('.Smin').val() == '0') {$('.fit').text('скользящая')}
+        else if ($('.Nmin').val() == '0') {$('.fit').text('легко прессовая')}
+        else if (($('.Smax').val() == $('.Nmax').val()) && $('.Smax').val()) {$('.fit').text('переходная')}
 
         // определение системы (отверстия или вала)
         if ($('.EI').val() == '0') {$('.sys_fit').text('отверстия')}
@@ -109,8 +109,8 @@ $(document).ready(function(){
     // клик по кнопке сброса
     $('.reset').click(function(){
         $('.graph').css('visibility', 'hidden');
-        $('.fit').text('не определена');
-        $('.sys_fit').text('не определена');
+        $('.fit').text('неизвестна');
+        $('.sys_fit').text('неизвестна');
     });
 
     $(".plot").click(function() {
