@@ -59,7 +59,7 @@ $(document).ready(function(){
                 }
                 else {
                     fieldValue = $('.' + sequence[j]).val();  // получаем значение поля
-                    if (fieldValue){sequence[j] = '(' + fieldValue + '*1000)'}  // записываем значение в последовательность
+                    if (fieldValue){sequence[j] = '(' + fieldValue + '*10000)'}  // записываем значение в последовательность
                     else {  // если значение отсутствует, выходим из цикла
                         marker = 1;
                         break;
@@ -73,7 +73,7 @@ $(document).ready(function(){
         }
         else {
             sequence = sequence.join('');  // сливаем выражение в одно строку
-            sequence = eval(sequence) / 1000;
+            sequence = eval(sequence) / 10000;
             return sequence;
         }
 	}
@@ -99,7 +99,7 @@ $(document).ready(function(){
 
 
     // просчёт значений
-    $('form').change(function() {
+    $('form').focusout(function() {
         if ($('#check').prop("checked")) {  // если стоит флажок "Обновлять автоматически"
             calc();
         }
