@@ -1,352 +1,287 @@
 $(document).ready(function(){
-    $(".plot").click(function () {
-        if ($('.ES').val() && $('.EI').val() && $('.es').val() && $('.ei').val() && $('.TD').val() && $('.Td').val()) {
-            $('.graph').text('');
-            $('.graph').append('<canvas id="graph" width="350" height="500"></canvas>');
-            var drawingCanvas = document.getElementById('graph');
-            if (drawingCanvas && drawingCanvas.getContext) {
-                var context = drawingCanvas.getContext('2d');
-                context.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-                context.font = "italic 8pt arial";
-                context.textAlign = "right";
-                var dif;
+    function draw() {
+        var svgContainer = d3.select(".chart").append("svg").attr("width", 500).attr("height", 500);
 
-                if (Number($('.ES').val()) != 0 || Number($('.es').val()) != 0) {
-                    dif = Number($('.ES').val()) - Number($('.es').val());
+        var ES = Number($('.ES').val()),
+            es = Number($('.es').val()),
+            EI = Number($('.EI').val()),
+            ei = Number($('.ei').val()),
+            Em = Number($('.Em').val()),
+            em = Number($('.em').val()),
+
+            Smax = Number($('.Smax').val()),
+            Smin = Number($('.Smin').val()),
+            Nmax = Number($('.Nmax').val()),
+            Nmin = Number($('.Nmin').val()),
+
+            TD = Number($('.TD').val()),
+            Td = Number($('.Td').val()),
+
+            dif;
+
+        if (ES!= 0 || es!= 0){
+            dif = ES - es;
+        }
+        else if (EI != 0 || ei != 0) {
+            dif = EI - ei;
+        }
+        else if (Em != 0 || em != 0) {
+            dif = Em - em;
+        } else dif = 0;
+
+        var DopD = TD,
+            Dopd = Td,
+            i = 1;
+
+        if (TD != 0 && Td != 0) {
+            if (TD < 20 || Td < 20) {
+                while (DopD < 20 || Dopd < 20) {
+                    Dopd = 2 * Dopd;
+                    DopD = 2 * DopD;
+                    i = i * 2;
                 }
-                else if (Number($('.EI').val()) != 0 || Number($('.ei').val()) != 0) {
-                    dif = Number($('.EI').val()) - Number($('.ei').val());
-                }
-                else if (Number($('.Em').val()) != 0 || Number($('.em').val()) != 0) {
-                    dif = Number($('.Em').val()) - Number($('.em').val());
-                } else dif = 0;
-
-                var TD = Number($('.TD').val()),
-                    Td = Number($('.Td').val());
-
-                if (TD != 0 && Td != 0) {
-                    if (TD < 20 || Td < 20) {
-                        var DopD = TD,
-                            Dopd = Td;
-                        var i = 1;
-                        while (DopD < 20 || Dopd < 20) {
-                            Dopd = 2 * Dopd;
-                            DopD = 2 * DopD;
-                            i = i * 2;
-                        }
-                        dif = i * dif;
+            } else {
+                if (TD > 100 || Td < 100) {
+                    while (DopD < 20 || Dopd < 20) {
+                        Dopd = Dopd / 2;
+                        DopD = DopD / 2;
+                        i = i * 2;
                     }
-                }
-
-
-                // Рисуем отверстие
-                context.strokeStyle = "#000";
-                context.fillStyle = "#ffff99";
-                context.beginPath();
-                if (TD != 0 && Td != 0) {
-                    if (TD < 20 || Td < 20) {
-                        context.rect(100, 100, 50, i * TD);
-                    } else {
-                        context.rect(100, 100, 50, TD);
-                    }
-                } else {
-                    context.rect(100, 100, 50, 50);
-                }
-                context.closePath();
-                context.stroke();
-                context.fill();
-
-
-                // Рисуем вал
-                context.strokeStyle = "#000";
-                context.fillStyle = "#999999";
-                context.beginPath();
-
-                if (TD != 0 && Td != 0) {
-                    if (TD < 20 || Td < 20) {
-                        context.rect(200, 100 + dif, 50, i * Td);
-                    } else {
-                        context.rect(200, 100 + dif, 50, Td);
-                    }
-                } else {
-                    context.rect(200, 100 + dif, 50, 50);
-                }
-                context.closePath();
-                context.stroke();
-                context.fill();
-
-
-                context.fillStyle = "red";
-
-                //Рисуем линию ES
-                context.beginPath();
-                context.moveTo(50, 100);
-                context.lineTo(200, 100);
-                context.fillText("ES", 100 - 3, 100 - 2);
-                context.stroke();
-
-                //Рисуем линию EI
-                context.beginPath();
-                if (TD != 0 && Td != 0) {
-                    if (TD < 20 || Td < 20) {
-                        context.moveTo(50, 100 + i * TD);
-                        context.lineTo(200, 100 + i * TD);
-                        context.fillText("EI", 100 - 3, 100 + i * TD - 2);
-                    } else {
-                        context.moveTo(50, 100 + TD);
-                        context.lineTo(200, 100 + TD);
-                        context.fillText("EI", 100 - 3, 100 + TD - 2);
-                    }
-                } else {
-                    context.moveTo(50, 100 + 50);
-                    context.lineTo(200, 100 + 50);
-                    context.fillText("EI", 100 - 3, 100 + 50 - 2);
-                }
-                context.stroke();
-
-                context.textAlign = "left";
-
-                //Рисуем линию es
-                context.beginPath();
-                context.moveTo(150, 100 + dif);
-                context.lineTo(300, 100 + dif);
-                context.fillText("es", 250 + 3, 100 + dif - 2);
-                context.stroke();
-
-                //Рисуем линию ei
-                context.beginPath();
-                if (TD != 0 && Td != 0) {
-                    if (TD < 20 || Td < 20) {
-                        context.moveTo(150, 100 + dif + i * Td);
-                        context.lineTo(300, 100 + dif + i * Td);
-                        context.fillText("ei", 250 + 3, 100 + dif + i * Td - 2);
-                    } else {
-                        context.moveTo(150, 100 + dif + Td);
-                        context.lineTo(300, 100 + dif + Td);
-                        context.fillText("ei", 250 + 3, 100 + dif + Td - 2);
-                    }
-                } else {
-                    context.moveTo(150, 100 + dif + 50);
-                    context.lineTo(300, 100 + dif + 50);
-                    context.fillText("ei", 250 + 3, 100 + dif + 50 - 2);
-                }
-                context.stroke();
-
-
-                //Рисуем линию Smax (от ES до ei)
-                if (Number($('.Smax').val()) >= 0 && $('.ES').val() && $('.ei').val()) {
-                    context.beginPath();
-                    context.moveTo(180, 100);
-                    context.lineTo(180, 100 + 250);
-                    context.fillText("Smax = " + $('.Smax').val(), 180 + 2, 100 + 250);
-                    //Стрелочка верхняя
-                    context.moveTo(180, 100);
-                    context.lineTo(180 + 2, 100 + 5);
-                    context.moveTo(180, 100);
-                    context.lineTo(180 - 2, 100 + 5);
-                    //Стрелочка нижняя
-                    if (TD != 0 && Td != 0) {
-                        if (TD < 20 || Td < 20) {
-                            context.moveTo(180, 100 + dif + i * Td);
-                            context.lineTo(180 + 2, 100 + dif + i * Td - 5);
-                            context.moveTo(180, 100 + dif + i * Td);
-                            context.lineTo(180 - 2, 100 + dif + i * Td - 5);
-                        } else {
-                            context.moveTo(180, 100 + dif + Td);
-                            context.lineTo(180 + 2, 100 + dif + Td - 5);
-                            context.moveTo(180, 100 + dif + Td);
-                            context.lineTo(180 - 2, 100 + dif + Td - 5);
-                        }
-                    } else {
-                        context.moveTo(180, 100 + dif + 50);
-                        context.lineTo(180 + 2, 100 + dif + 50 - 5);
-                        context.moveTo(180, 100 + dif + 50);
-                        context.lineTo(180 - 2, 100 + dif + 50 - 5);
-                    }
-                    context.stroke();
-                }
-
-
-                //Рисуем линию Smin (от EI до es)
-                if (Number($('.Smin').val() >= 0 && $('.EI').val() && $('.es').val())) {
-                    context.beginPath();
-                    if (TD != 0 && Td != 0) {
-                        if (TD < 20 || Td < 20) {
-                            context.moveTo(185, 100 + i * TD);
-                        } else {
-                            context.moveTo(185, 100 + TD);
-                        }
-                    } else {
-                        context.moveTo(185, 100 + 50);
-                    }
-                    context.lineTo(185, 100 + 225);
-                    context.fillText("Smin = " + $('.Smin').val(), 185 + 2, 100 + 225);
-                    //Стрелочка верхняя
-                    if (TD != 0 && Td != 0) {
-                        if (TD < 20 || Td < 20) {
-                            context.moveTo(185, 100 + i * TD);
-                            context.lineTo(185 + 2, 100 + i * TD + 5);
-                            context.moveTo(185, 100 + i * TD);
-                            context.lineTo(185 - 2, 100 + i * TD + 5);
-                        } else {
-                            context.moveTo(185, 100 + TD);
-                            context.lineTo(185 + 2, 100 + TD + 5);
-                            context.moveTo(185, 100 + TD);
-                            context.lineTo(185 - 2, 100 + TD + 5);
-                        }
-                    } else {
-                        context.moveTo(185, 100 + 50);
-                        context.lineTo(185 + 2, 100 + 50 + 5);
-                        context.moveTo(185, 100 + 50);
-                        context.lineTo(185 - 2, 100 + 50 + 5);
-                    }
-                    //Стрелочка нижняя
-                    context.moveTo(185, 100 + dif);
-                    context.lineTo(185 + 2, 100 + dif - 5);
-                    context.moveTo(185, 100 + dif);
-                    context.lineTo(185 - 2, 100 + dif - 5);
-                    context.stroke();
-                }
-
-                context.textAlign = "right";
-
-                //Рисуем линию Nmax (от es до EI)
-                if (Number($('.Nmax').val() >= 0 && $('.es').val() && $('.EI').val())) {
-                    context.beginPath();
-                    context.moveTo(170, 100 + dif);
-                    context.lineTo(170, 100 + 250);
-                    context.fillText("Nmax = " + $('.Nmax').val(), 170 - 2, 100 + 250);
-                    //Стрелочка верхняя
-                    context.moveTo(170, 100 + dif);
-                    context.lineTo(170 + 2, 100 + dif + 5);
-                    context.moveTo(170, 100 + dif);
-                    context.lineTo(170 - 2, 100 + dif + 5);
-                    //Стрелочка нижняя
-                    if (TD != 0 && Td != 0) {
-                        if (TD < 20 || Td < 20) {
-                            context.moveTo(170, 100 + i * TD);
-                            context.lineTo(170 + 2, 100 + i * TD - 5);
-                            context.moveTo(170, 100 + i * TD);
-                            context.lineTo(170 - 2, 100 + i * TD - 5);
-                        } else {
-                            context.moveTo(170, 100 + TD);
-                            context.lineTo(170 + 2, 100 + TD - 5);
-                            context.moveTo(170, 100 + TD);
-                            context.lineTo(170 - 2, 100 + TD - 5);
-                        }
-                    } else {
-                        context.moveTo(170, 100 + 50);
-                        context.lineTo(170 + 2, 100 + 50 - 5);
-                        context.moveTo(170, 100 + 50);
-                        context.lineTo(170 - 2, 100 + 50 - 5);
-                    }
-                    context.stroke();
-                }
-
-
-                //Рисуем линию Nmin (от ei до ES)
-                if (Number($('.Nmin').val() >= 0 && $('.ei').val() && $('.ES').val())) {
-                    context.beginPath();
-                    if (TD != 0 && Td != 0) {
-                        if (TD < 20 || Td < 20) {
-                            context.moveTo(165, 100 + dif + i * Td);
-                        } else {
-                            context.moveTo(165, 100 + dif + Td);
-                        }
-                    } else {
-                        context.moveTo(165, 100 + dif + 50);
-                    }
-                    context.lineTo(165, 100 + 225);
-                    context.fillText("Nmin = " + $('.Nmin').val(), 165 - 2, 100 + 225);
-                    //Стрелочка верхняя
-                    if (TD != 0 && Td != 0) {
-                        if (TD < 20 || Td < 20) {
-                            context.moveTo(165, 100 + dif + i * Td);
-                            context.lineTo(165 + 2, 100 + dif + i * Td + 5);
-                            context.moveTo(165, 100 + dif + i * Td);
-                            context.lineTo(165 - 2, 100 + dif + i * Td + 5);
-                        } else {
-                            context.moveTo(165, 100 + dif + Td);
-                            context.lineTo(165 + 2, 100 + dif + Td + 5);
-                            context.moveTo(165, 100 + dif + Td);
-                            context.lineTo(165 - 2, 100 + dif + Td + 5);
-                        }
-                    } else {
-                        context.moveTo(165, 100 + dif + 50);
-                        context.lineTo(165 + 2, 100 + dif + 50 + 5);
-                        context.moveTo(165, 100 + dif + 50);
-                        context.lineTo(165 - 2, 100 + dif + 50 + 5);
-                    }
-                    //Стрелочка нижняя
-                    context.moveTo(165, 100);
-                    context.lineTo(165 + 2, 100 - 5);
-                    context.moveTo(165, 100);
-                    context.lineTo(165 - 2, 100 - 5);
-                    context.stroke();
-                }
-
-
-                // Рисуем ось y
-                context.beginPath();
-                context.moveTo(50, 0);
-                context.lineTo(50, 500);
-                context.moveTo(300, 0);
-                context.lineTo(300, 500);
-                context.stroke();
-
-                // Рисуем деления на оси y
-                context.fillStyle = "blue";
-
-                context.textAlign = "right";
-                context.fillText($('.ES').val(), 47, 100 + 4);
-                if (TD != 0 && Td != 0) {
-                    if (TD < 20 || Td < 20) {
-                        context.fillText($('.EI').val(), 47, 100 + i * TD + 4);
-                    } else {
-                        context.fillText($('.EI').val(), 47, 100 + TD + 4);
-                    }
-                } else {
-                    context.fillText($('.EI').val(), 47, 100 + 50 + 4);
-                }
-                //context.fillText($('.Em').val(), 47, 100 + 50 / 2 + 4);
-
-                context.textAlign = "left";
-                context.fillText($('.es').val(), 302, 100 + dif + 4);
-                if (TD != 0 && Td != 0) {
-                    if (TD < 20 || Td < 20) {
-                        context.fillText($('.ei').val(), 302, 100 + dif + i * Td + 4);
-                    } else {
-                        context.fillText($('.ei').val(), 302, 100 + dif + Td + 4);
-                    }
-                } else {
-                    context.fillText($('.ei').val(), 302, 100 + dif + 50 + 4);
-                }
-                //context.fillText($('.em').val(), 302, 100 + dif + 50 / 2 + 4);
-
-
-                // Рисуем допуски
-                context.fillStyle = "green";
-                context.font = "normal 12pt arial";
-                context.textAlign = "center";
-
-                if (TD != 0 && Td != 0) {
-                    if (TD < 20 || Td < 20) {
-                        context.fillText(TD, 125, 100 + i * TD / 2 + 6);
-                    } else {
-                        context.fillText(TD, 125, 100 + TD / 2 + 6);
-                    }
-                }
-
-                if (TD != 0 && Td != 0) {
-                    if (TD < 20 || Td < 20) {
-                        context.fillText(Td, 225, 100 + i * Td / 2 + 6 + dif);
-                    } else {
-                        context.fillText(Td, 225, 100 + Td / 2 + 6 + dif);
-                    }
+                    i = 1 / i;
                 }
             }
+            dif = i * dif;
         } else {
-            $('.graph').text('Недостаточно данных для построения диаграммы');
+            TD = 50;
+            Td = 50;
+        }
+
+        // рисуем отверстие
+        var hole = svgContainer.append("rect")
+            .attr("x", 100)
+            .attr("y", 100)
+            .attr("width", 50)
+            .attr("height", i * TD)
+            .attr("stroke-width", 0.75)
+            .style("stroke", "#000")
+            .style("fill", "#ffff99");
+
+
+        // рисуем вал
+        var shaft = svgContainer.append("rect")
+            .attr("x", 200)
+            .attr("y", 100 + dif)
+            .attr("width", 50)
+            .attr("height", i * Td)
+            .attr("stroke-width", 0.75)
+            .style("stroke", "#000")
+            .style("fill", "#999999");
+
+        var lineGroup = svgContainer.append("g")
+            .attr("stroke-width", 1.5)
+            .attr("stroke", "black");
+
+        var textGroup = svgContainer.append("g")
+            .attr("font-family", "arial")
+            .attr("font-size", "8pt")
+            .attr("font-style", "italic")
+            .attr("fill", "red");
+
+        // рисуем линию ES
+        var ESline = lineGroup.append("line")
+            .attr("x1", 50)
+            .attr("y1", 100)
+            .attr("x2", 200)
+            .attr("y2", 100);
+
+        var EStext = textGroup.append("text")
+            .attr("x", 100 - 3)
+            .attr("y", 100 - 2)
+            .attr("text-anchor", "end")
+            .text("ES");
+
+        // рисуем линию EI
+        var EIline = lineGroup.append("line")
+            .attr("x1", 50)
+            .attr("y1", 100 + i * TD)
+            .attr("x2", 200)
+            .attr("y2", 100 + i * TD);
+
+        var EItext = textGroup.append("text")
+            .attr("x", 100 - 3)
+            .attr("y", 100 + i * TD - 2)
+            .attr("text-anchor", "end")
+            .text("EI");
+
+        // рисуем линию es
+        var esline = lineGroup.append("line")
+            .attr("x1", 150)
+            .attr("y1", 100 + dif)
+            .attr("x2", 300)
+            .attr("y2", 100 + dif);
+
+        var estext = textGroup.append("text")
+            .attr("x", 250 + 3)
+            .attr("y", 100 + dif - 2)
+            .attr("text-anchor", "start")
+            .text("es");
+
+        // рисуем линию ei
+        var eiline = lineGroup.append("line")
+            .attr("x1", 150)
+            .attr("y1", 100 + dif + i * Td)
+            .attr("x2", 300)
+            .attr("y2", 100 + dif + i * Td);
+
+        var eitext = textGroup.append("text")
+            .attr("x", 250 + 3)
+            .attr("y", 100 + dif + i * Td - 2)
+            .attr("text-anchor", "start")
+            .text("ei");
+
+        //Рисуем линию Smax (от ES до ei)
+        if (Smax >= 0 && ES >= 0 && ei >= 0) {
+            var Smaxtext = textGroup.append("text")
+                .attr("x", 180 + 2)
+                .attr("y", 100 + dif + i * Td + 50)
+                .attr("text-anchor", "start")
+                .text("Smax = " + Smax);
+
+            var Smaxline = lineGroup.append("line")
+                .attr("x1", 180)
+                .attr("y1", 100)
+                .attr("x2", 180)
+                .attr("y2", 100 + dif + i * Td + 50);
+
+            //Стрелочка верхняя
+            lineGroup.append("path")
+                .attr("d", d3.svg.symbol().type("triangle-up"))
+                .attr('transform', "translate(" + 180 + "," + (100 + 1.5) + ") scale(" + 0.4 + ")")
+                .style("fill", "black");
+
+            //Стрелочка нижняя
+            lineGroup.append("path")
+                .attr("d", d3.svg.symbol().type("triangle-down"))
+                .attr('transform', "translate(" + 180 + "," + (100 + dif + i * Td - 1.5) + ") scale(" + 0.4 + ")")
+                .style("fill", "black");
+        }
+
+
+        //Рисуем линию Smin (от EI до es)
+        if (Smin >= 0 && EI >= 0 && es >= 0) {
+            var Smintext = textGroup.append("text")
+                .attr("x", 185 + 2)
+                .attr("y", 100 + dif + i * Td + 25)
+                .attr("text-anchor", "start")
+                .text("Smin = " + Smin);
+
+            var Sminline = lineGroup.append("line")
+                .attr("x1", 185)
+                .attr("y1", 100 + i * TD)
+                .attr("x2", 185)
+                .attr("y2", 100 + dif + i * Td + 25);
+
+            //Стрелочка верхняя
+            lineGroup.append("path")
+                .attr("d", d3.svg.symbol().type("triangle-up"))
+                .attr('transform', "translate(" + 185 + "," + (100 + i * TD + 1.5) + ") scale(" + 0.4 + ")")
+                .style("fill", "black");
+
+            //Стрелочка нижняя
+            lineGroup.append("path")
+                .attr("d", d3.svg.symbol().type("triangle-down"))
+                .attr('transform', "translate(" + 185 + "," + (100 + dif - 1.5) + ") scale(" + 0.4 + ")")
+                .style("fill", "black");
+        }
+
+        //Рисуем линию Nmax (от es до EI)
+        if (Nmax >= 0 && es >= 0 && EI >= 0) {
+            var Nmaxtext = textGroup.append("text")
+                .attr("x", 170 - 2)
+                .attr("y", 100 - dif + i * TD + 50)
+                .attr("text-anchor", "end")
+                .text("Nmax = " + Nmax);
+
+            var Nmaxline = lineGroup.append("line")
+                .attr("x1", 170)
+                .attr("y1", 100 + dif)
+                .attr("x2", 170)
+                .attr("y2", 100 - dif + i * TD + 50);
+
+            //Стрелочка верхняя
+            lineGroup.append("path")
+                .attr("d", d3.svg.symbol().type("triangle-up"))
+                .attr('transform', "translate(" + 170 + "," + (100 + dif + 1.5) + ") scale(" + 0.4 + ")")
+                .style("fill", "black");
+
+            //Стрелочка нижняя
+            lineGroup.append("path")
+                .attr("d", d3.svg.symbol().type("triangle-down"))
+                .attr('transform', "translate(" + 170 + "," + (100 + i * TD  - 1.5) + ") scale(" + 0.4 + ")")
+                .style("fill", "black");
+        }
+
+
+        //Рисуем линию Nmin (от ei до ES)
+        if (Nmin >= 0 && ei >= 0 && ES >= 0) {
+            var Nmintext = textGroup.append("text")
+                .attr("x", 165 - 2)
+                .attr("y", 100 - dif + i * TD + 25)
+                .attr("text-anchor", "end")
+                .text("Nmin = " + Nmin);
+
+            var Nminline = lineGroup.append("line")
+                .attr("x1", 165)
+                .attr("y1", 100 + dif + i * Td)
+                .attr("x2", 165)
+                .attr("y2", 100 - dif + i * TD + 25);
+
+            //Стрелочка верхняя
+            lineGroup.append("path")
+                .attr("d", d3.svg.symbol().type("triangle-up"))
+                .attr('transform', "translate(" + 165 + "," + (100 + dif + i * Td + 1.5) + ") scale(" + 0.4 + ")")
+                .style("fill", "black");
+
+            //Стрелочка нижняя
+            lineGroup.append("path")
+                .attr("d", d3.svg.symbol().type("triangle-down"))
+                .attr('transform', "translate(" + 165 + "," + (100 - 1.5) + ") scale(" + 0.4 + ")")
+                .style("fill", "black");
+        }
+
+
+        // Рисуем допуски
+        var textTolGroup = svgContainer.append("g")
+            .attr("font-family", "arial")
+            .attr("font-size", "12pt")
+            .attr("font-style", "italic")
+            .attr("text-anchor", "middle")
+            .attr("fill", "green");
+
+        if (TD != 0 && Td != 0) {
+            var TolD = textTolGroup.append("text")
+                .attr("x", 125)
+                .attr("y", 100 + i * TD / 2 + 6)
+                .text(TD);
+            var Told = textTolGroup.append("text")
+                .attr("x", 225)
+                .attr("y", 100 + i * Td / 2 + 6 + dif)
+                .text(Td);
+        }
+    }
+
+    $(".plot").click(function () {
+        $('.chart').empty();
+        $('.warn').css('visibility', 'hidden');
+        if ($('.graph').css('visibility') == 'visible') {
+            if ($('.ES').val() && $('.EI').val() && $('.es').val() && $('.ei').val() && $('.TD').val() && $('.Td').val()) {
+                draw();
+                $('.chart').css('visibility', 'visible');
+            } else {
+                $('.warn').text('Недостаточно данных для построения диаграммы');
+                $('.chart').css('visibility', 'hidden');
+                $('.warn').css('visibility', 'visible');
             }
+        }
     });
 });
