@@ -1,23 +1,38 @@
 $(document).ready(function(){
+    var ES,
+        es,
+        EI,
+        ei,
+        Em,
+        em,
+
+        Smax,
+        Smin,
+        Nmax,
+        Nmin,
+
+        TD,
+        Td;
+
     function draw() {
         var svgContainer = d3.select(".chart").append("svg").attr("width", 500).attr("height", 500);
 
-        var ES = Number($('.ES').val()),
-            es = Number($('.es').val()),
-            EI = Number($('.EI').val()),
-            ei = Number($('.ei').val()),
-            Em = Number($('.Em').val()),
-            em = Number($('.em').val()),
+        ES = Number($('.ES').val());
+        es = Number($('.es').val());
+        EI = Number($('.EI').val());
+        ei = Number($('.ei').val());
+        Em = Number($('.Em').val());
+        em = Number($('.em').val());
 
-            Smax = Number($('.Smax').val()),
-            Smin = Number($('.Smin').val()),
-            Nmax = Number($('.Nmax').val()),
-            Nmin = Number($('.Nmin').val()),
+        Smax = Number($('.Smax').val());
+        Smin = Number($('.Smin').val());
+        Nmax = Number($('.Nmax').val());
+        Nmin = Number($('.Nmin').val());
 
-            TD = Number($('.TD').val()),
-            Td = Number($('.Td').val()),
+        TD = Number($('.TD').val());
+        Td = Number($('.Td').val());
 
-            dif;
+        var dif;
 
         if (ES!= 0 || es!= 0){
             dif = ES - es;
@@ -35,14 +50,14 @@ $(document).ready(function(){
 
         if (TD != 0 && Td != 0) {
             if (TD < 20 || Td < 20) {
-                while (DopD < 20 || Dopd < 20) {
+                while ((DopD < 20 && Dopd < 100)|| (Dopd < 20 && DopD < 100)) {
                     Dopd = 2 * Dopd;
                     DopD = 2 * DopD;
                     i = i * 2;
                 }
             } else {
-                if (TD > 100 || Td < 100) {
-                    while (DopD < 20 || Dopd < 20) {
+                if (TD > 100 || Td > 100) {
+                    while ((DopD > 20 && Dopd > 100)|| (Dopd > 20 && DopD > 100)) {
                         Dopd = Dopd / 2;
                         DopD = DopD / 2;
                         i = i * 2;
@@ -65,7 +80,6 @@ $(document).ready(function(){
             .attr("stroke-width", 0.75)
             .style("stroke", "#000")
             .style("fill", "#ffff99");
-
 
         // рисуем вал
         var shaft = svgContainer.append("rect")
@@ -98,7 +112,7 @@ $(document).ready(function(){
             .attr("x", 100 - 3)
             .attr("y", 100 - 2)
             .attr("text-anchor", "end")
-            .text("ES");
+            .text("ES = " + ES);
 
         // рисуем линию EI
         var EIline = lineGroup.append("line")
@@ -111,7 +125,7 @@ $(document).ready(function(){
             .attr("x", 100 - 3)
             .attr("y", 100 + i * TD - 2)
             .attr("text-anchor", "end")
-            .text("EI");
+            .text("EI = " + EI);
 
         // рисуем линию es
         var esline = lineGroup.append("line")
@@ -124,7 +138,7 @@ $(document).ready(function(){
             .attr("x", 250 + 3)
             .attr("y", 100 + dif - 2)
             .attr("text-anchor", "start")
-            .text("es");
+            .text("es = " + es);
 
         // рисуем линию ei
         var eiline = lineGroup.append("line")
@@ -137,7 +151,7 @@ $(document).ready(function(){
             .attr("x", 250 + 3)
             .attr("y", 100 + dif + i * Td - 2)
             .attr("text-anchor", "start")
-            .text("ei");
+            .text("ei = " + ei);
 
         //Рисуем линию Smax (от ES до ei)
         if (Smax >= 0 && ES >= 0 && ei >= 0) {
