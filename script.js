@@ -27,13 +27,15 @@ var
         ['Ts', 'Допуск зазора (посадки)', ['Smax - Smin', 'TD - Td']],
         ['TN', 'Допуск натяга (посадки)', ['Nmax - Nmin', 'TD - Td']]
     ],
-    add_fields = [['fit', 'Посадка:', 'неизвестна'], ['sys_fit', 'Cистема:', 'неизвестна']];
+    add_fields = [['fit', 'Посадка:', 'неизвестна'], ['sys_fit', 'Cистема:', 'неизвестна']],
+    reFieldValue = /^(\-?[0-9]+(\.?[0-9]+)?)?$/,  // валидность числа TODO улучшить
+    fieldName;
 
 
 $(document).ready(function(){
     // генерация полей
     for (var i = 0; i < inputs.length; ++i){
-        $('table').append( $('<tr><td>' + inputs[i][0] + '</td><td><input class="field ' + inputs[i][0] + '"></td><td>' + inputs[i][1] + '</td><td>' +  inputs[i][2] +'</td></tr>') );
+        $('table').append( $('<tr><td>' + inputs[i][0] + '</td><td><input type="text" class="field ' + inputs[i][0] + '"></td><td>' + inputs[i][1] + '</td><td>' +  inputs[i][2] +'</td></tr>') );
     }
     for (var j = 0; j < add_fields.length; j++) {
         $('table').append( $('<tr><td>' + add_fields[j][1] + '</td><td><div class="' + add_fields[j][0] + '">' + add_fields[j][2] + '</div></td><td></td></tr>') );
@@ -77,9 +79,9 @@ $(document).ready(function(){
 	}
 
     function calc(){
-        var fieldName;  // имя поля
         for (var i = 0; i < inputs.length; ++i) {
             fieldName = '.' + inputs[i][0];
+            //$(fieldName).val( $(fieldName).val().replace(',', '.') );
             if ($(fieldName).val() == '') {  // если поле пустое, пробуем для него просчитать значение
                 $(fieldName).val(calculate(inputs[i][2]));
             }
@@ -99,12 +101,26 @@ $(document).ready(function(){
 
 
     // просчёт значений
-    $('form').change(function() {
+    $('form').change( function() {
         if ($('#auto-upd').prop("checked")) {  // если стоит флажок "Обновлять автоматически"
             calc();
         }
     });
-    $(".calc").click(calc);
+    $(".calc").click(calc); // по клику по кнопке 'Считать'
+
+    // проверка валидности значений в полях
+    $('form').keyup( function() {  // TODO улучшить
+        for (var i = 0; i < inputs.length; ++i) {
+            fieldName = '.' + inputs[i][0];
+            $(fieldName).val( $(fieldName).val().replace(',', '.') );
+            if (reFieldValue.test($(fieldName).val())) {
+                $(fieldName).css('background-color', 'white');
+            }
+            else {
+                $(fieldName).css('background-color', '#ff988a');
+            }
+        }
+    });
 
     // клик по кнопке сброса
     $('.reset').click(function(){
