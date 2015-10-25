@@ -26,38 +26,36 @@ var
         ['Td', 'Допуск вала', ['dmax - dmin', 'es - ei'/*выв*/]],
         ['Ts', 'Допуск зазора (посадки)', ['Smax - Smin', 'TD - Td']],
         ['TN', 'Допуск натяга (посадки)', ['Nmax - Nmin', 'TD - Td']]
-    ];
+    ],
+    add_fields = [['fit', 'Посадка:', 'неизвестна'], ['sys_fit', 'Cистема:', 'неизвестна']];
 
 
 $(document).ready(function(){
     // генерация полей
     for (var i = 0; i < inputs.length; ++i){
-        $('table').append( $('<tr><td>' + inputs[i][0] + '</td><td><input value="" class="field ' + inputs[i][0] + '"></td><td>' + inputs[i][1] + '</td><td>' +  inputs[i][2] +'</td></tr>') );
+        $('table').append( $('<tr><td>' + inputs[i][0] + '</td><td><input class="field ' + inputs[i][0] + '"></td><td>' + inputs[i][1] + '</td><td>' +  inputs[i][2] +'</td></tr>') );
     }
-    $('table').append( $('<tr><td>Посадка:</td><td><div class="fit">неизвестна</div></td><td></td></tr>') );
-    $('table').append( $('<tr><td>Система:</td><td><div class="sys_fit">неизвестна</div></td><td></td></tr>') );
+    for (var j = 0; j < add_fields.length; j++) {
+        $('table').append( $('<tr><td>' + add_fields[j][1] + '</td><td><div class="' + add_fields[j][0] + '">' + add_fields[j][2] + '</div></td><td></td></tr>') );
+    }
 
 
-    function calculate(expressions){
+    function calculate(expression){
          /*
          ПОДСЧЁТ ЗНАЧЕНИЯ ВЫРАЖЕНИЯ
          Принимает:
-            expressions (massive) математическое выражение
+            expression (massive) математическое выражение
          Возвращает:
             (int) результат
          */
         var sequence,
             fieldValue,  // значение считываемого поля
             marker;  // достаточно ли данных для просчета выражения
-        for (var i = 0; i < expressions.length; i++) {
+        for (var i = 0; i < expression.length; i++) {
             marker = 0;
-            sequence = expressions[i].split(' ');  // разбиваем выражение на составные части
+            sequence = expression[i].split(' ');  // разбиваем выражение на составные части
             for (var j = 0; j < sequence.length; j++) {
-                // если символ, переходим на новую итерацию
-                if ('=+-/()2'.indexOf(sequence[j]) != -1) {  // костыль
-                    continue;
-                }
-                else {
+                if (['=', '+', '-', '/', '(', ')', '2'].indexOf(sequence[j]) == -1) {  // если не символ
                     fieldValue = $('.' + sequence[j]).val();  // получаем значение поля
                     if (fieldValue){sequence[j] = '(' + fieldValue + '*10000)'}  // записываем значение в последовательность
                     else {  // если значение отсутствует, выходим из цикла
@@ -79,11 +77,11 @@ $(document).ready(function(){
 	}
 
     function calc(){
-        var fieldValue;  // значение поля
+        var fieldName;  // имя поля
         for (var i = 0; i < inputs.length; ++i) {
-            fieldValue = '.' + inputs[i][0];
-            if ($(fieldValue).val() == '') {
-                $(fieldValue).val(calculate(inputs[i][2]));
+            fieldName = '.' + inputs[i][0];
+            if ($(fieldName).val() == '') {  // если поле пустое, пробуем для него просчитать значение
+                $(fieldName).val(calculate(inputs[i][2]));
             }
         }
 
@@ -91,16 +89,18 @@ $(document).ready(function(){
         if ($('.Smin').val() == '0') {$('.fit').text('скользящая')}
         else if ($('.Nmin').val() == '0') {$('.fit').text('легко прессовая')}
         else if (($('.Smax').val() == $('.Nmax').val()) && $('.Smax').val()) {$('.fit').text('переходная')}
+        else {$('.fit').text('неизвестна')}
 
         // определение системы (отверстия или вала)
         if ($('.EI').val() == '0') {$('.sys_fit').text('отверстия')}
         else if ($('.es').val() == '0') {$('.sys_fit').text('вала')}
+        else {$('.sys_fit').text('неизвестна')}
     }
 
 
     // просчёт значений
-    $('form').focusout(function() {
-        if ($('#check').prop("checked")) {  // если стоит флажок "Обновлять автоматически"
+    $('form').change(function() {
+        if ($('#auto-upd').prop("checked")) {  // если стоит флажок "Обновлять автоматически"
             calc();
         }
     });
