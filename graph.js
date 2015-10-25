@@ -1,5 +1,6 @@
 $(document).ready(function(){
-    var ES,
+    var D,
+        ES,
         es,
         EI,
         ei,
@@ -17,12 +18,14 @@ $(document).ready(function(){
     function draw() {
         var svgContainer = d3.select(".chart").append("svg").attr("width", 500).attr("height", 500);
 
-        ES = Number($('.ES').val());
-        es = Number($('.es').val());
-        EI = Number($('.EI').val());
-        ei = Number($('.ei').val());
-        Em = Number($('.Em').val());
-        em = Number($('.em').val());
+        D = $('.D').val();
+
+        ES = $('.ES').val();
+        es = $('.es').val();
+        EI = $('.EI').val();
+        ei = $('.ei').val();
+        Em = $('.Em').val();
+        em = $('.em').val();
 
         Smax = Number($('.Smax').val());
         Smin = Number($('.Smin').val());
@@ -34,13 +37,13 @@ $(document).ready(function(){
 
         var dif;
 
-        if (ES!= 0 || es!= 0){
+        if (ES && es){
             dif = ES - es;
         }
-        else if (EI != 0 || ei != 0) {
+        else if (EI && ei) {
             dif = EI - ei;
         }
-        else if (Em != 0 || em != 0) {
+        else if (Em && em) {
             dif = Em - em;
         } else dif = 0;
 
@@ -92,14 +95,14 @@ $(document).ready(function(){
             .style("fill", "#999999");
 
         var lineGroup = svgContainer.append("g")
-            .attr("stroke-width", 1.5)
+            .attr("stroke-width", 1.3)
             .attr("stroke", "black");
 
         var textGroup = svgContainer.append("g")
             .attr("font-family", "arial")
             .attr("font-size", "8pt")
             .attr("font-style", "italic")
-            .attr("fill", "red");
+            .attr("fill", "#3c53ab");
 
         // рисуем линию ES
         var ESline = lineGroup.append("line")
@@ -154,7 +157,7 @@ $(document).ready(function(){
             .text("ei = " + ei);
 
         //Рисуем линию Smax (от ES до ei)
-        if (Smax >= 0 && ES >= 0 && ei >= 0) {
+        if (Smax >= 0 && ES && ei) {
             var Smaxtext = textGroup.append("text")
                 .attr("x", 180 + 2)
                 .attr("y", 100 + dif + i * Td + 50)
@@ -182,7 +185,7 @@ $(document).ready(function(){
 
 
         //Рисуем линию Smin (от EI до es)
-        if (Smin >= 0 && EI >= 0 && es >= 0) {
+        if (Smin >= 0 && EI && es) {
             var Smintext = textGroup.append("text")
                 .attr("x", 185 + 2)
                 .attr("y", 100 + dif + i * Td + 25)
@@ -209,7 +212,7 @@ $(document).ready(function(){
         }
 
         //Рисуем линию Nmax (от es до EI)
-        if (Nmax >= 0 && es >= 0 && EI >= 0) {
+        if (Nmax >= 0 && es && EI) {
             var Nmaxtext = textGroup.append("text")
                 .attr("x", 170 - 2)
                 .attr("y", 100 - dif + i * TD + 50)
@@ -237,7 +240,7 @@ $(document).ready(function(){
 
 
         //Рисуем линию Nmin (от ei до ES)
-        if (Nmin >= 0 && ei >= 0 && ES >= 0) {
+        if (Nmin >= 0 && ei && ES) {
             var Nmintext = textGroup.append("text")
                 .attr("x", 165 - 2)
                 .attr("y", 100 - dif + i * TD + 25)
@@ -264,13 +267,49 @@ $(document).ready(function(){
         }
 
 
+        // рисуем нулевую линию
+        var zeroline = lineGroup.append("line")
+            .attr("x1", 0)
+            .attr("y1", 100 + Number(ES))
+            .attr("x2", 350)
+            .attr("y2", 100 + Number(ES));
+
+        var zerotext = textGroup.append("text")
+            .attr("x", 2)
+            .attr("y", 100 + Number(ES) - 2)
+            .attr("text-anchor", "start")
+            .text("0");
+
+        // номинальный размер
+        if (D){
+            var nominalline = lineGroup.append("line")
+                .attr("x1", 25)
+                .attr("y1", 100 + Number(ES))
+                .attr("x2", 25)
+                .attr("y2", 100 + dif + i * Td + i * TD + 25);
+
+            var nominaltext = textGroup.append("text")
+                .attr("x", 25 - 3)
+                .attr("y", 100 + dif + i * Td + i * TD + 25)
+                .attr("font-size", "15pt")
+                .attr("text-anchor", "end")
+                .text(D);
+
+            //Стрелочка
+            lineGroup.append("path")
+                .attr("d", d3.svg.symbol().type("triangle-up"))
+                .attr('transform', "translate(" + 25 + "," + (100 + Number(ES) + 3.5) + ") scale(" + 0.6 + ")")
+                .style("fill", "black");
+        }
+
+
         // Рисуем допуски
         var textTolGroup = svgContainer.append("g")
             .attr("font-family", "arial")
             .attr("font-size", "12pt")
-            .attr("font-style", "italic")
+            .attr("font-style", "regular")
             .attr("text-anchor", "middle")
-            .attr("fill", "green");
+            .attr("fill", "#600600");
 
         if (TD != 0 && Td != 0) {
             var TolD = textTolGroup.append("text")
