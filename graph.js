@@ -16,7 +16,12 @@ $(document).ready(function(){
         Td;
 
     function draw() {
-        var svgContainer = d3.select(".chart").append("svg").attr("width", 500).attr("height", 500);
+        // сам svg элемент
+        var svgContainer = d3.select(".chart")
+            .append("svg");
+
+        // контейнер для элементов, который будем смещать
+        var MainGroup = svgContainer.append("g");
 
         D = $('.D').val();
 
@@ -74,253 +79,234 @@ $(document).ready(function(){
             Td = 50;
         }
 
-        // рисуем отверстие
-        var hole = svgContainer.append("rect")
-            .attr("x", 100)
-            .attr("y", 100)
-            .attr("width", 50)
-            .attr("height", i * TD)
-            .attr("stroke-width", 0.75)
-            .style("stroke", "#000")
-            .style("fill", "#ffff99");
+        // подгоняем высоту изображения
+        // смещаем картину ближе к центру
+        if (dif >= 0){
+            svgContainer.attr("height", (5 + i * TD + i * Td + Math.abs(dif) + 75));
+            MainGroup.attr('transform', "translate(" + 0 + "," + (5 + 15) + ")");
+        } else {
+            svgContainer.attr("height", (5 + i * TD + i * Td + Math.abs(dif) + Math.abs(dif) + 75));
+            MainGroup.attr('transform', "translate(" + 0 + "," + (5 + Math.abs(dif) + 15) + ")");
+        }
 
-        // рисуем вал
-        var shaft = svgContainer.append("rect")
-            .attr("x", 200)
-            .attr("y", 100 + dif)
-            .attr("width", 50)
-            .attr("height", i * Td)
-            .attr("stroke-width", 0.75)
-            .style("stroke", "#000")
-            .style("fill", "#999999");
 
-        var lineGroup = svgContainer.append("g")
+        // рисуем отверстие и вал
+        var jsonHoleShaft = [
+            { "x_axis": 100, "y_axis": 0, "width": 50, "height": i * TD, "color" : "#ffff99" },
+            { "x_axis": 200, "y_axis": 0 + dif, "width": 50, "height": i * Td, "color" : "#999999" }
+        ];
+
+        var HoleShaft = MainGroup.selectAll("HoleShaft")
+            .data(jsonHoleShaft)
+            .enter()
+            .append("rect");
+
+        var HoleShaftAttributes = HoleShaft
+            .attr("x", function (d) { return d.x_axis; })
+            .attr("y", function (d) { return d.y_axis; })
+            .attr("height", function (d) { return d.height; })
+            .attr("width", function (d) { return d.width; })
+            .style("fill", function(d) { return d.color; })
+            .style("stroke", "#000")
+            .attr("stroke-width", 0.75);
+
+
+        // рисуем линии отклонений
+        var jsonDevLines = [
+            { "x1": 50, "y1": 0, "x2": 200, "y2": 0 },
+            { "x1": 50, "y1": i * TD, "x2": 200, "y2": i * TD },
+            { "x1": 150, "y1": dif, "x2": 300, "y2": dif },
+            { "x1": 150, "y1": dif + i * Td, "x2": 300, "y2": dif + i * Td }
+        ];
+
+        var DevLines = MainGroup.selectAll("DevLines")
+            .data(jsonDevLines)
+            .enter()
+            .append("line");
+
+        var DevLinesAttributes = DevLines
+            .attr("x1", function (d) { return d.x1; })
+            .attr("y1", function (d) { return d.y1; })
+            .attr("x2", function (d) { return d.x2; })
+            .attr("y2", function (d) { return d.y2; })
             .attr("stroke-width", 1.3)
             .attr("stroke", "black");
 
-        var textGroup = svgContainer.append("g")
+        // рисуем значения отклонений
+        var jsonDevText = [
+            { "x": 100 - 3, "y": 0 - 2, "text_anchor": "end", "txt": "ES = " + ES },
+            { "x": 100 - 3, "y": i * TD - 2, "text_anchor": "end", "txt": "EI = " + EI },
+            { "x": 250 + 3, "y": dif - 2, "text_anchor": "start", "txt": "es = " + es },
+            { "x": 250 + 3, "y": dif + i * Td - 2, "text_anchor": "start", "txt": "ei = " + ei }
+        ];
+
+        var DevText = MainGroup.selectAll("DevText")
+            .data(jsonDevText)
+            .enter()
+            .append("text");
+
+        var DevTextAttributes = DevText
             .attr("font-family", "arial")
             .attr("font-size", "8pt")
             .attr("font-style", "italic")
-            .attr("fill", "#3c53ab");
+            .attr("fill", "#3c53ab")
+            .attr("x", function (d) { return d.x; })
+            .attr("y", function (d) { return d.y; })
+            .attr("text-anchor", function (d) { return d.text_anchor; })
+            .text(function (d) { return d.txt; });
 
-        // рисуем линию ES
-        var ESline = lineGroup.append("line")
-            .attr("x1", 50)
-            .attr("y1", 100)
-            .attr("x2", 200)
-            .attr("y2", 100);
 
-        var EStext = textGroup.append("text")
-            .attr("x", 100 - 3)
-            .attr("y", 100 - 2)
-            .attr("text-anchor", "end")
-            .text("ES = " + ES);
+        // рисуем линии зазоров и натягов, их значения и стрелочки
+        var jsonClAlLines = [],
+            jsonClAlText = [],
+            jsonArrows = [];
 
-        // рисуем линию EI
-        var EIline = lineGroup.append("line")
-            .attr("x1", 50)
-            .attr("y1", 100 + i * TD)
-            .attr("x2", 200)
-            .attr("y2", 100 + i * TD);
-
-        var EItext = textGroup.append("text")
-            .attr("x", 100 - 3)
-            .attr("y", 100 + i * TD - 2)
-            .attr("text-anchor", "end")
-            .text("EI = " + EI);
-
-        // рисуем линию es
-        var esline = lineGroup.append("line")
-            .attr("x1", 150)
-            .attr("y1", 100 + dif)
-            .attr("x2", 300)
-            .attr("y2", 100 + dif);
-
-        var estext = textGroup.append("text")
-            .attr("x", 250 + 3)
-            .attr("y", 100 + dif - 2)
-            .attr("text-anchor", "start")
-            .text("es = " + es);
-
-        // рисуем линию ei
-        var eiline = lineGroup.append("line")
-            .attr("x1", 150)
-            .attr("y1", 100 + dif + i * Td)
-            .attr("x2", 300)
-            .attr("y2", 100 + dif + i * Td);
-
-        var eitext = textGroup.append("text")
-            .attr("x", 250 + 3)
-            .attr("y", 100 + dif + i * Td - 2)
-            .attr("text-anchor", "start")
-            .text("ei = " + ei);
-
-        //Рисуем линию Smax (от ES до ei)
+        // добавление нужных линий
         if (Smax >= 0 && ES && ei) {
-            var Smaxtext = textGroup.append("text")
-                .attr("x", 180 + 2)
-                .attr("y", 100 + dif + i * Td + 50)
-                .attr("text-anchor", "start")
-                .text("Smax = " + Smax);
-
-            var Smaxline = lineGroup.append("line")
-                .attr("x1", 180)
-                .attr("y1", 100)
-                .attr("x2", 180)
-                .attr("y2", 100 + dif + i * Td + 50);
-
-            //Стрелочка верхняя
-            lineGroup.append("path")
-                .attr("d", d3.svg.symbol().type("triangle-up"))
-                .attr('transform', "translate(" + 180 + "," + (100 + 1.5) + ") scale(" + 0.4 + ")")
-                .style("fill", "black");
-
-            //Стрелочка нижняя
-            lineGroup.append("path")
-                .attr("d", d3.svg.symbol().type("triangle-down"))
-                .attr('transform', "translate(" + 180 + "," + (100 + dif + i * Td - 1.5) + ") scale(" + 0.4 + ")")
-                .style("fill", "black");
+            jsonClAlLines.push( { "x1": 180, "y1": 0, "x2": 180, "y2": dif + i * Td + 50 } );
+            jsonClAlText.push( { "x": 180 + 2, "y": dif + i * Td + 50, "text_anchor": "start", "txt": "Smax = " + Smax } );
+            jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 180 + "," + (2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
+            jsonArrows.push( { "type": "triangle-down", "trans": "translate(" + 180 + "," + (dif + i * Td - 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
         }
 
-
-        //Рисуем линию Smin (от EI до es)
         if (Smin >= 0 && EI && es) {
-            var Smintext = textGroup.append("text")
-                .attr("x", 185 + 2)
-                .attr("y", 100 + dif + i * Td + 25)
-                .attr("text-anchor", "start")
-                .text("Smin = " + Smin);
-
-            var Sminline = lineGroup.append("line")
-                .attr("x1", 185)
-                .attr("y1", 100 + i * TD)
-                .attr("x2", 185)
-                .attr("y2", 100 + dif + i * Td + 25);
-
-            //Стрелочка верхняя
-            lineGroup.append("path")
-                .attr("d", d3.svg.symbol().type("triangle-up"))
-                .attr('transform', "translate(" + 185 + "," + (100 + i * TD + 1.5) + ") scale(" + 0.4 + ")")
-                .style("fill", "black");
-
-            //Стрелочка нижняя
-            lineGroup.append("path")
-                .attr("d", d3.svg.symbol().type("triangle-down"))
-                .attr('transform', "translate(" + 185 + "," + (100 + dif - 1.5) + ") scale(" + 0.4 + ")")
-                .style("fill", "black");
+            jsonClAlLines.push( { "x1": 185, "y1": i * TD, "x2": 185, "y2": dif + i * Td + 25 } );
+            jsonClAlText.push( { "x": 185 + 2, "y": dif + i * Td + 25, "text_anchor": "start", "txt": "Smin = " + Smin } );
+            jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 185 + "," + (i * TD + 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
+            jsonArrows.push( { "type": "triangle-down", "trans": "translate(" + 185 + "," + (dif - 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
         }
 
-        //Рисуем линию Nmax (от es до EI)
         if (Nmax >= 0 && es && EI) {
-            var Nmaxtext = textGroup.append("text")
-                .attr("x", 170 - 2)
-                .attr("y", 100 - dif + i * TD + 50)
-                .attr("text-anchor", "end")
-                .text("Nmax = " + Nmax);
-
-            var Nmaxline = lineGroup.append("line")
-                .attr("x1", 170)
-                .attr("y1", 100 + dif)
-                .attr("x2", 170)
-                .attr("y2", 100 - dif + i * TD + 50);
-
-            //Стрелочка верхняя
-            lineGroup.append("path")
-                .attr("d", d3.svg.symbol().type("triangle-up"))
-                .attr('transform', "translate(" + 170 + "," + (100 + dif + 1.5) + ") scale(" + 0.4 + ")")
-                .style("fill", "black");
-
-            //Стрелочка нижняя
-            lineGroup.append("path")
-                .attr("d", d3.svg.symbol().type("triangle-down"))
-                .attr('transform', "translate(" + 170 + "," + (100 + i * TD  - 1.5) + ") scale(" + 0.4 + ")")
-                .style("fill", "black");
+            jsonClAlLines.push( { "x1": 170, "y1": dif, "x2": 170, "y2": i * TD + 50 } );
+            jsonClAlText.push( { "x": 170 - 2, "y": i * TD + 50, "text_anchor": "end", "txt": "Nmax = " + Nmax } );
+            jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 170 + "," + (dif + 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
+            jsonArrows.push( { "type": "triangle-down", "trans": "translate(" + 170 + "," + (i * TD  - 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
         }
 
-
-        //Рисуем линию Nmin (от ei до ES)
         if (Nmin >= 0 && ei && ES) {
-            var Nmintext = textGroup.append("text")
-                .attr("x", 165 - 2)
-                .attr("y", 100 - dif + i * TD + 25)
-                .attr("text-anchor", "end")
-                .text("Nmin = " + Nmin);
-
-            var Nminline = lineGroup.append("line")
-                .attr("x1", 165)
-                .attr("y1", 100 + dif + i * Td)
-                .attr("x2", 165)
-                .attr("y2", 100 - dif + i * TD + 25);
-
-            //Стрелочка верхняя
-            lineGroup.append("path")
-                .attr("d", d3.svg.symbol().type("triangle-up"))
-                .attr('transform', "translate(" + 165 + "," + (100 + dif + i * Td + 1.5) + ") scale(" + 0.4 + ")")
-                .style("fill", "black");
-
-            //Стрелочка нижняя
-            lineGroup.append("path")
-                .attr("d", d3.svg.symbol().type("triangle-down"))
-                .attr('transform', "translate(" + 165 + "," + (100 - 1.5) + ") scale(" + 0.4 + ")")
-                .style("fill", "black");
+            jsonClAlLines.push( { "x1": 165, "y1": dif + i * Td, "x2": 165, "y2": i * TD + 25 } );
+            jsonClAlText.push( { "x": 165 - 2, "y": i * TD + 25, "text_anchor": "end", "txt": "Nmin = " + Nmin } );
+            jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 165 + "," + (dif + i * Td + 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
+            jsonArrows.push( { "type": "triangle-down", "trans": "translate(" + 165 + "," + (- 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
         }
 
+        // линии зазоров и натягов
+        var ClAlLines = MainGroup.selectAll("ClAlLines")
+            .data(jsonClAlLines)
+            .enter()
+            .append("line");
 
-        // рисуем нулевую линию
-        var zeroline = lineGroup.append("line")
-            .attr("x1", 0)
-            .attr("y1", 100 + Number(ES))
-            .attr("x2", 350)
-            .attr("y2", 100 + Number(ES));
+        var ClAlLinesAttributes = ClAlLines
+            .attr("x1", function (d) { return d.x1; })
+            .attr("y1", function (d) { return d.y1; })
+            .attr("x2", function (d) { return d.x2; })
+            .attr("y2", function (d) { return d.y2; })
+            .attr("stroke-width", 1.25)
+            .attr("stroke", "black");
 
-        var zerotext = textGroup.append("text")
-            .attr("x", 2)
-            .attr("y", 100 + Number(ES) - 2)
-            .attr("text-anchor", "start")
-            .text("0");
+        // значения зазоров и натягов
+        var ClAlText = MainGroup.selectAll("ClAlText")
+            .data(jsonClAlText)
+            .enter()
+            .append("text");
 
-        // номинальный размер
+        var ClAlTextAttributes = ClAlText
+            .attr("font-family", "arial")
+            .attr("font-size", "8pt")
+            .attr("font-style", "italic")
+            .attr("fill", "#3c53ab")
+            .attr("x", function (d) { return d.x; })
+            .attr("y", function (d) { return d.y; })
+            .attr("text-anchor", function (d) { return d.text_anchor; })
+            .text(function (d) { return d.txt; });
+
+
+        // рисуем нулевую линию и номинальный размер
+        var jsonZeroLine = [
+            { "x1": 0, "y1": i * Number(ES), "x2": 350, "y2": i * Number(ES) }
+        ];
+
+        var jsonZeroText = [
+            { "x": 2, "y": i * Number(ES) - 2, "text_anchor": "start", "fs": "10pt", "txt": "0" }
+        ];
+
+        // если указан номинальный размер
         if (D){
-            var nominalline = lineGroup.append("line")
-                .attr("x1", 25)
-                .attr("y1", 100 + Number(ES))
-                .attr("x2", 25)
-                .attr("y2", 100 + dif + i * Td + i * TD + 25);
-
-            var nominaltext = textGroup.append("text")
-                .attr("x", 25 - 3)
-                .attr("y", 100 + dif + i * Td + i * TD + 25)
-                .attr("font-size", "15pt")
-                .attr("text-anchor", "end")
-                .text(D);
-
-            //Стрелочка
-            lineGroup.append("path")
-                .attr("d", d3.svg.symbol().type("triangle-up"))
-                .attr('transform', "translate(" + 25 + "," + (100 + Number(ES) + 3.5) + ") scale(" + 0.6 + ")")
-                .style("fill", "black");
+            if (dif >= 0){
+                jsonZeroLine.push( { "x1": 15, "y1": i * Number(ES), "x2": 15, "y2": i * Td + Math.abs(dif) + 25 } );
+                jsonZeroText.push( { "x": 15 + 2, "y": i * Td + Math.abs(dif) + 25, "text_anchor": "start", "fs": "15pt", "txt": D } );
+            } else {
+                jsonZeroLine.push( { "x1": 15, "y1": i * Number(ES), "x2": 15, "y2": i * TD + Math.abs(dif) + 25 } );
+                jsonZeroText.push( { "x": 15 + 2, "y": i * TD + Math.abs(dif) + 25, "text_anchor": "start", "fs": "15pt", "txt": D } );
+            }
+            jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 15 + "," + (i * Number(ES) + 3.5) + ") scale(" + 0.6 + "," + 1 + ")"} );
         }
+
+        // нулевая линия
+        var ZeroLine = MainGroup.selectAll("ZeroLine")
+            .data(jsonZeroLine)
+            .enter()
+            .append("line");
+
+        var ZeroLineAttributes = ZeroLine
+            .attr("x1", function (d) { return d.x1; })
+            .attr("y1", function (d) { return d.y1; })
+            .attr("x2", function (d) { return d.x2; })
+            .attr("y2", function (d) { return d.y2; })
+            .attr("stroke-width", 1.3)
+            .attr("stroke", "black");
+
+        // значения
+        var ZeroText = MainGroup.selectAll("ZeroText")
+            .data(jsonZeroText)
+            .enter()
+            .append("text");
+
+        var ZeroTextAttributes = ZeroText
+            .attr("font-family", "arial")
+            .attr("font-size", function (d) { return d.fs; })
+            .attr("font-style", "italic")
+            .attr("fill", "#3c53ab")
+            .attr("x", function (d) { return d.x; })
+            .attr("y", function (d) { return d.y; })
+            .attr("text-anchor", function (d) { return d.text_anchor; })
+            .text(function (d) { return d.txt; });
+
+        // стрелочки
+        var Arrows = MainGroup.selectAll("Arrow")
+            .data(jsonArrows)
+            .enter()
+            .append("path");
+
+        var ArrowsAttributes = Arrows
+            .attr("d", d3.svg.symbol().type(function (d) { return d.type; }) )
+            .attr("transform", function (d) { return d.trans; })
+            .attr("stroke-width", 1)
+            .attr("fill", "black");
 
 
         // Рисуем допуски
-        var textTolGroup = svgContainer.append("g")
+        var jsonTolText = [];
+
+        if (TD != 0 && Td != 0) {
+            jsonTolText.push( { "x": 125, "y": i * TD / 2 + 6, "txt": TD });
+            jsonTolText.push( { "x": 225, "y": i * Td / 2 + 6 + dif, "txt": Td });
+        }
+
+        var TolText = MainGroup.selectAll("TolText")
+            .data(jsonTolText)
+            .enter()
+            .append("text");
+
+        var TolTextAttributes = TolText
             .attr("font-family", "arial")
             .attr("font-size", "12pt")
             .attr("font-style", "regular")
             .attr("text-anchor", "middle")
-            .attr("fill", "#600600");
-
-        if (TD != 0 && Td != 0) {
-            var TolD = textTolGroup.append("text")
-                .attr("x", 125)
-                .attr("y", 100 + i * TD / 2 + 6)
-                .text(TD);
-            var Told = textTolGroup.append("text")
-                .attr("x", 225)
-                .attr("y", 100 + i * Td / 2 + 6 + dif)
-                .text(Td);
-        }
+            .attr("fill", "#600600")
+            .attr("x", function (d) { return d.x; })
+            .attr("y", function (d) { return d.y; })
+            .text(function (d) { return d.txt; });
     }
 
     $(".plot").click(function () {
