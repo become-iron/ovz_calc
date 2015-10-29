@@ -80,15 +80,24 @@ $(document).ready(function(){
         }
 
         // подгоняем высоту изображения
+        var svgHeight = 5 + i * TD + i * Td + Math.abs(dif) + 75;
         // смещаем картину ближе к центру
+        var svgTrans;
         if (dif >= 0){
-            svgContainer.attr("height", (5 + i * TD + i * Td + Math.abs(dif) + 75));
-            MainGroup.attr('transform', "translate(" + 0 + "," + (5 + 15) + ")");
+            svgTrans = 5 + 15;
         } else {
-            svgContainer.attr("height", (5 + i * TD + i * Td + Math.abs(dif) + Math.abs(dif) + 75));
-            MainGroup.attr('transform', "translate(" + 0 + "," + (5 + Math.abs(dif) + 15) + ")");
+            svgTrans = 5 + Math.abs(dif) + 15;
         }
 
+        // расставляем размеры
+        var mult = 1.25;
+
+        svgContainer.attr("height", mult * svgHeight);
+        MainGroup.attr('transform', "translate(" + 0 + "," + (mult * svgTrans) + ") scale(" + mult + ")");
+
+        //var svgWidth = $("svg").parent().width();
+        var svgWidth = 350;
+        svgContainer.attr("width", mult * svgWidth);
 
         // рисуем отверстие и вал
         var jsonHoleShaft = [
@@ -148,7 +157,7 @@ $(document).ready(function(){
         var DevTextAttributes = DevText
             .attr("font-family", "arial")
             .attr("font-size", "8pt")
-            .attr("font-style", "italic")
+            .attr("font-style", "regular")
             .attr("fill", "#3c53ab")
             .attr("x", function (d) { return d.x; })
             .attr("y", function (d) { return d.y; })
@@ -213,7 +222,7 @@ $(document).ready(function(){
         var ClAlTextAttributes = ClAlText
             .attr("font-family", "arial")
             .attr("font-size", "8pt")
-            .attr("font-style", "italic")
+            .attr("font-style", "regular")
             .attr("fill", "#3c53ab")
             .attr("x", function (d) { return d.x; })
             .attr("y", function (d) { return d.y; })
@@ -227,19 +236,30 @@ $(document).ready(function(){
         ];
 
         var jsonZeroText = [
-            { "x": 2, "y": i * Number(ES) - 2, "text_anchor": "start", "fs": "10pt", "txt": "0" }
+            { "x": 2, "y": i * Number(ES) - 2, "text_anchor": "start", "fsz": "10pt", "txt": "0" }
         ];
+
 
         // если указан номинальный размер
         if (D){
+            var DEnd;
             if (dif >= 0){
-                jsonZeroLine.push( { "x1": 15, "y1": i * Number(ES), "x2": 15, "y2": i * Td + Math.abs(dif) + 25 } );
-                jsonZeroText.push( { "x": 15 + 2, "y": i * Td + Math.abs(dif) + 25, "text_anchor": "start", "fs": "15pt", "txt": D } );
+                DEnd = i * Td + Math.abs(dif)
             } else {
-                jsonZeroLine.push( { "x1": 15, "y1": i * Number(ES), "x2": 15, "y2": i * TD + Math.abs(dif) + 25 } );
-                jsonZeroText.push( { "x": 15 + 2, "y": i * TD + Math.abs(dif) + 25, "text_anchor": "start", "fs": "15pt", "txt": D } );
+                DEnd = i * TD + Math.abs(dif)
             }
-            jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 15 + "," + (i * Number(ES) + 3.5) + ") scale(" + 0.6 + "," + 1 + ")"} );
+            if (DEnd <= i * Number(ES)) {
+                DEnd = DEnd + i * Number(ES)
+            } else {
+                DEnd = DEnd + 25
+            }
+            if (DEnd >= svgHeight) {
+                DEnd = svgHeight - svgTrans - 25
+            }
+
+            jsonZeroLine.push( { "x1": 15, "y1": i * Number(ES), "x2": 15, "y2": DEnd } );
+            jsonZeroText.push( { "x": 15 + 2, "y": DEnd, "text_anchor": "start", "fsz": "15pt", "txt": D } );
+            jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 15 + "," + (i * Number(ES) + 4) + ") scale(" + 0.6 + "," + 1 + ")"} );
         }
 
         // нулевая линия
@@ -264,8 +284,8 @@ $(document).ready(function(){
 
         var ZeroTextAttributes = ZeroText
             .attr("font-family", "arial")
-            .attr("font-size", function (d) { return d.fs; })
-            .attr("font-style", "italic")
+            .attr("font-size", function (d) { return d.fsz; })
+            .attr("font-style", "regular")
             .attr("fill", "#3c53ab")
             .attr("x", function (d) { return d.x; })
             .attr("y", function (d) { return d.y; })
@@ -310,16 +330,19 @@ $(document).ready(function(){
     }
 
     $(".plot").click(function () {
-        $('.chart').empty();
-        $('.warn').css('visibility', 'hidden');
+        var parentChart = $('.chart');
+        var warningMessage = $('.warn');
+
+        parentChart.empty();
+        warningMessage.css('visibility', 'hidden');
         if ($('.graph').css('visibility') == 'visible') {
             if ($('.ES').val() && $('.EI').val() && $('.es').val() && $('.ei').val() && $('.TD').val() && $('.Td').val()) {
                 draw();
-                $('.chart').css('visibility', 'visible');
+                parentChart.css('visibility', 'visible');
             } else {
-                $('.warn').text('Недостаточно данных для построения диаграммы');
-                $('.chart').css('visibility', 'hidden');
-                $('.warn').css('visibility', 'visible');
+                warningMessage.text('Недостаточно данных для построения диаграммы');
+                parentChart.css('visibility', 'hidden');
+                warningMessage.css('visibility', 'visible');
             }
         }
     });
