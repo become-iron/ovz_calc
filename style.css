@@ -44,3 +44,7 @@ input[type="reset"] {
 input[type='text'] {
     background-color: white;
 }
+
+select {
+    width: 60px;
+}
