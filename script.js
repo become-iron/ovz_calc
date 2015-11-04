@@ -258,7 +258,7 @@ $(document).ready(function(){
         else {$('.sys_fit').text('неизвестна')}
     }
 
-    function select_tol_zones() {
+    function select_tol_zones(mark) {
         // определение области номинального размера
         var tmpValField = Number($('.D').val());
         if (1 <= tmpValField && tmpValField <= 500) {
@@ -291,46 +291,56 @@ $(document).ready(function(){
             $(".zone_shift").prop("disabled", true);
         }
 
-        var qual_shift = $('.qual_shift').val(),
-            qual_hole = $('.qual_hole').val(),
-            lstHoleZones = [],
-            lstShiftZones = [];
-        for (i = 0; i < variationsHoles.length; i++) {
-            if (variationsHoles[i][0] == nom_zone && variationsHoles[i][1] == qual_hole && lstHoleZones.indexOf(variationsHoles[i][2]) == -1) {
-                lstHoleZones.push(variationsHoles[i][2]);
-            }
-        }
-        for (var i = 0; i < variationsShifts.length; i++) {
-            if (variationsShifts[i][0] == nom_zone && variationsShifts[i][1] == qual_shift && lstShiftZones.indexOf(variationsShifts[i][2]) == -1) {
-                lstShiftZones.push(variationsShifts[i][2]);
-            }
-        }
 
-        $('.zone_hole').empty();
-        $('.zone_shift').empty();
-        if (lstHoleZones.length > 0) {
-            $('.zone_hole').append($('<option value="100">—</option>'));
-            for (i = 0; i < lstHoleZones.length; i++) {
-                $('.zone_hole').append($('<option value="' + lstHoleZones[i] + '">' + tol_zones[lstHoleZones[i]] + '</option>'));
-                $(".zone_hole").prop("disabled", false);
+
+        if (mark === 0) {
+            var qual_hole = $('.qual_hole').val(),
+                lstHoleZones = [];
+            for (i = 0; i < variationsHoles.length; i++) {
+                if (variationsHoles[i][0] == nom_zone && variationsHoles[i][1] == qual_hole && lstHoleZones.indexOf(variationsHoles[i][2]) == -1) {
+                    lstHoleZones.push(variationsHoles[i][2]);
+                }
+            }
+            $('.zone_hole').empty();
+            if (lstHoleZones.length > 0) {
+                $('.zone_hole').append($('<option value="100">—</option>'));
+                for (i = 0; i < lstHoleZones.length; i++) {
+                    $('.zone_hole').append($('<option value="' + lstHoleZones[i] + '">' + tol_zones[lstHoleZones[i]] + '</option>'));
+                    $(".zone_hole").prop("disabled", false);
+                }
+            }
+            else {$(".zone_hole").prop("disabled", true);}
+        }
+        else if (mark === 1) {
+            $('.zone_shift').empty();
+            var qual_shift = $('.qual_shift').val(),
+                lstShiftZones = [];
+            for (var i = 0; i < variationsShifts.length; i++) {
+                if (variationsShifts[i][0] == nom_zone && variationsShifts[i][1] == qual_shift && lstShiftZones.indexOf(variationsShifts[i][2]) == -1) {
+                    lstShiftZones.push(variationsShifts[i][2]);
+                }
+            }
+            if (lstShiftZones.length > 0) {
+                $('.zone_shift').append($('<option value="100">—</option>'));
+                for (i = 0; i < lstShiftZones.length; i++) {
+                    $('.zone_shift').append($('<option value="' + lstShiftZones[i] + '">' + tol_zones[lstShiftZones[i]] + '</option>'));
+                    $(".zone_shift").prop("disabled", false);
+                }
+            }
+            else {
+                $(".zone_shift").prop("disabled", true);
             }
         }
-        else {$(".zone_hole").prop("disabled", true);}
-        if (lstShiftZones.length > 0) {
-            $('.zone_shift').append($('<option value="100">—</option>'));
-            for (i = 0; i < lstShiftZones.length; i++) {
-                $('.zone_shift').append($('<option value="' + lstShiftZones[i] + '">' + tol_zones[lstShiftZones[i]] + '</option>'));
-                $(".zone_shift").prop("disabled", false);
-            }
-        }
-        else {$(".zone_shift").prop("disabled", true);}
     }
 
 
 
     // выбор квалитета
-    $('.qual').change( function() {
-        select_tol_zones();
+    $('.qual_hole').change( function() {
+        select_tol_zones(0);
+    });
+    $('.qual_shift').change( function() {
+        select_tol_zones(1);
     });
     //$('.D').change( function() {
     //    select_tol_zones();
