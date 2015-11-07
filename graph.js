@@ -13,7 +13,12 @@ $(document).ready(function(){
         Nmin,
 
         TD,
-        Td;
+        Td,
+
+        QHoleKey,
+        QShaftKey,
+        zHole,
+        zShaft;
 
     function draw() {
         // сам svg элемент
@@ -22,6 +27,11 @@ $(document).ready(function(){
 
         // контейнер для элементов, который будем смещать
         var MainGroup = svgContainer.append("g");
+
+        QHoleKey = tol_zones[$('.zone_hole').val()];
+        QShaftKey = tol_zones[$('.zone_shift').val()];
+        zHole = $('.qual_hole').val();
+        zShaft = $('.qual_shift').val();
 
         D = $('.D').val();
 
@@ -309,8 +319,8 @@ $(document).ready(function(){
         var jsonTolText = [];
 
         if (TD != 0 && Td != 0) {
-            jsonTolText.push( { "x": 125, "y": i * TD / 2 + 6, "txt": TD });
-            jsonTolText.push( { "x": 225, "y": i * Td / 2 + 6 + dif, "txt": Td });
+            jsonTolText.push( { "x": 125, "y": i * TD / 2 + 6, "txt": QHoleKey + zHole });
+            jsonTolText.push( { "x": 225, "y": i * Td / 2 + 6 + dif, "txt": QShaftKey + zShaft });
         }
 
         var TolText = MainGroup.selectAll("TolText")
@@ -329,6 +339,31 @@ $(document).ready(function(){
             .text(function (d) { return d.txt; });
     }
 
+    function convertToPNG(){
+        var svg = d3.select("svg")[0][0],
+            img = new Image(),
+            serializer = new XMLSerializer(),
+            svgStr = serializer.serializeToString(svg);
+
+        var svgOrig = $("svg");
+
+        var w = svgOrig.width(),
+            h = svgOrig.height();
+
+        img.src = 'data:image/svg+xml;base64,' + window.btoa(svgStr);
+
+        var canvas = document.createElement("canvas");
+
+        canvas.width = w;
+        canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+
+        var parentChart = $(".chart");
+
+        parentChart.empty();
+        parentChart.append(canvas);
+    }
+
     $(".plot").click(function () {
         var parentChart = $('.chart');
         var warningMessage = $('.warn');
@@ -338,6 +373,7 @@ $(document).ready(function(){
         if ($('.graph').css('visibility') == 'visible') {
             if ($('.ES').val() && $('.EI').val() && $('.es').val() && $('.ei').val() && $('.TD').val() && $('.Td').val()) {
                 draw();
+                convertToPNG();
                 parentChart.css('visibility', 'visible');
             } else {
                 warningMessage.text('Недостаточно данных для построения диаграммы');
