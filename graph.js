@@ -29,9 +29,9 @@ $(document).ready(function(){
         var MainGroup = svgContainer.append("g");
 
         QHoleKey = tol_zones[$('.zone_hole').val()];
-        QShaftKey = tol_zones[$('.zone_shift').val()];
+        QShaftKey = tol_zones[$('.zone_shaft').val()];
         zHole = $('.qual_hole').val();
-        zShaft = $('.qual_shift').val();
+        zShaft = $('.qual_shaft').val();
 
         D = $('.D').val();
 
@@ -343,11 +343,11 @@ $(document).ready(function(){
         var svg = d3.select("svg")[0][0],
             img = new Image(),
             serializer = new XMLSerializer(),
-            svgStr = serializer.serializeToString(svg);
+            svgStr = serializer.serializeToString(svg),
 
-        var svgOrig = $("svg");
+            svgOrig = $("svg"),
 
-        var w = svgOrig.width(),
+            w = svgOrig.width(),
             h = svgOrig.height();
 
         img.src = 'data:image/svg+xml;base64,' + window.btoa(svgStr);
