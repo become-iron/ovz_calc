@@ -373,7 +373,9 @@ $(document).ready(function(){
         if ($('.graph').css('visibility') == 'visible') {
             if ($('.ES').val() && $('.EI').val() && $('.es').val() && $('.ei').val() && $('.TD').val() && $('.Td').val()) {
                 draw();
-                convertToPNG();
+                if (navigator.userAgent.search("Firefox") == -1){
+                    convertToPNG();
+                }
                 parentChart.css('visibility', 'visible');
             } else {
                 warningMessage.text('Недостаточно данных для построения диаграммы');
