@@ -130,7 +130,7 @@ var
         [5, 8, 39, [21, 0]],
         [6, 8, 39, [21, 0]]],
     // ВАЛЫ
-    variationsShafts = [
+    variationsshafts = [
         [0, 7, 11, [0, -10]],
         [1, 7, 11, [0, -12]],
         [2, 7, 11, [0, -15]],
@@ -187,6 +187,9 @@ var
     code = '',
     i;
 
+var nom_zone;
+
+
 $(document).ready(function(){
 
     // ГЕНЕРАЦИЯ ПОЛЕЙ
@@ -222,13 +225,13 @@ $(document).ready(function(){
         var sequence,
             fieldValue,  // значение считываемого поля
             marker;  // достаточно ли данных для просчета выражения
-        for (i = 0; i < expression.length; i++) {
+        for (var i = 0; i < expression.length; i++) {
             marker = 0;
             sequence = expression[i].split(' ');  // разбиваем выражение на составные части
             for (var j = 0; j < sequence.length; j++) {
                 if (['=', '+', '-', '/', '(', ')', '2'].indexOf(sequence[j]) === -1) {  // если не символ
                     fieldValue = $('.' + sequence[j]).val();  // получаем значение поля
-                    if (fieldValue){sequence[j] = '(' + fieldValue + ')'}  // записываем значение в последовательность
+                    if (fieldValue){sequence[j] = '(' + fieldValue + '*10000)'}  // записываем значение в последовательность
                     else {  // если значение отсутствует, выходим из цикла
                         marker = 1;
                         break;
@@ -242,13 +245,13 @@ $(document).ready(function(){
         }
         else {
             sequence = sequence.join('');  // сливаем выражение в одно строку
-            sequence = eval(sequence).toFixed(3);
+            sequence = eval(sequence) / 10000;
             return sequence;
         }
 	}
 
     function calc() {
-        for (i = 0; i < inputs.length; ++i) {
+        for (var i = 0; i < inputs.length; ++i) {
             fieldName = '.' + inputs[i][0];
             //$(fieldName).val( $(fieldName).val().replace(',', '.') );
             if ($(fieldName).val() === '') {  // если поле пустое, пробуем для него просчитать значение
@@ -268,28 +271,21 @@ $(document).ready(function(){
         else {$('.sys_fit').text('неизвестна')}
     }
 
-
-    function discover_nom_zone() {
+    function select_tol_zones(mark) {
         // определение области номинального размера
-        var valNomField = Number($('.D').val()),
-            keyNomZone;  // код предела номинального размера
+        var valNomField = Number($('.D').val());
+        var keyNomZone;  // код предела номинального размера
         for (i = 0; i < nom_zones.length; i++) {
             if (nom_zones[i][0] < valNomField && valNomField <= nom_zones[i][1]) {
                 keyNomZone = nom_zones[i][2];
                 break;
             }
             else if (valNomField == 1) {
-                keyNomZone = 0;
-                break;
+            keyNomZone = 1;
+            break;
             }
         }
-        return keyNomZone;
-    }
 
-
-    function select_tol_zones(mark) {
-        // Вывод доступных полей допусков
-        var keyNomZone = discover_nom_zone();
         if (mark === 0) {
             var qual_hole = $('.qual_hole').val(),
                 lstHoleZones = [];
@@ -312,9 +308,9 @@ $(document).ready(function(){
             $('.zone_shaft').empty();
             var qual_shaft = $('.qual_shaft').val(),
                 lstshaftZones = [];
-            for (var i = 0; i < variationsShafts.length; i++) {
-                if (variationsShafts[i][0] == keyNomZone && variationsShafts[i][1] == qual_shaft && lstshaftZones.indexOf(variationsShafts[i][2]) == -1) {
-                    lstshaftZones.push(variationsShafts[i][2]);
+            for (var i = 0; i < variationsshafts.length; i++) {
+                if (variationsshafts[i][0] == keyNomZone && variationsshafts[i][1] == qual_shaft && lstshaftZones.indexOf(variationsshafts[i][2]) == -1) {
+                    lstshaftZones.push(variationsshafts[i][2]);
                 }
             }
             if (lstshaftZones.length > 0) {
@@ -331,6 +327,7 @@ $(document).ready(function(){
     }
 
 
+
     // выбор квалитета
     $('.qual_hole').change( function() {
         select_tol_zones(0);
@@ -338,37 +335,24 @@ $(document).ready(function(){
     $('.qual_shaft').change( function() {
         select_tol_zones(1);
     });
+    //$('.D').change( function() {
+    //    select_tol_zones();
+    //});
+
 
     // выбор поля допуска
     $('.tol_zone').change( function() {
         var valQualHole = Number( $('.qual_hole :selected').val() ),
-            valQualShaft = Number( $('.qual_shaft :selected').val() ),
-            valTolZoneHole = Number( $('.zone_hole :selected').val() ),
-            valTolZoneShaft = Number( $('.zone_shaft :selected').val() ),
-            keyNomZone = discover_nom_zone();
+            valQualshaft = Number( $('.qual_shaft :selected').val() );
         if (valQualHole > 0) {
-            for (i = 0; i < variationsHoles.length; i++) {
-                if (variationsHoles[i][0] == keyNomZone &&
-                    variationsHoles[i][1] == valQualHole &&
-                    variationsHoles[i][2] == valTolZoneHole) {
-                    // TODO если не будет искомого элемента, может вернуться что-то странное, наверное
-                    $('.ES').val(variationsHoles[i][3][0] / 1000);  // делим на 1000 для перевода в мкм
-                    $('.EI').val(variationsHoles[i][3][1] / 1000);
-                    break;
-                }
-            }
+            // TODO если не будет искомого элемента, может вернуться что-то странное, наверное
+            $('.ES').val(variationsHoles[valQualHole][3][0] / 1000);
+            $('.EI').val(variationsHoles[valQualHole][3][1] / 1000);
         }
-        if (valQualShaft > 0) {
-            for (i = 0; i < variationsShafts.length; i++) {
-                if (variationsShafts[i][0] == keyNomZone &&
-                    variationsShafts[i][1] == valQualShaft &&
-                    variationsShafts[i][2] == valTolZoneShaft) {
-                    // TODO если не будет искомого элемента, может вернуться что-то странное, наверное
-                    $('.es').val(variationsShafts[i][3][0] / 1000);
-                    $('.ei').val(variationsShafts[i][3][1] / 1000);
-                    break;
-                }
-            }
+        if (valQualshaft > 0) {
+            // TODO если не будет искомого элемента, может вернуться что-то странное, наверное
+            $('.es').val(variationsshafts[valQualshaft][3][0] / 1000);
+            $('.ei').val(variationsshafts[valQualshaft][3][1] / 1000);
         }
     });
 
@@ -378,11 +362,11 @@ $(document).ready(function(){
             calc();
         }
     });
-    $(".calc").click( calc() ); // по клику по кнопке 'Считать'
+    $(".calc").click(calc); // по клику по кнопке 'Считать'
 
     // проверка валидности значений в полях
     $('input').keyup( function() {  // TODO улучшить, не работает для поля "D"
-        for (i = 0; i < inputs.length; ++i) {
+        for (var i = 0; i < inputs.length; ++i) {
             fieldName = '.' + inputs[i][0];
             $(fieldName).val( $(fieldName).val().replace(',', '.') );
             // TODO добавить проверку значений для пределов
