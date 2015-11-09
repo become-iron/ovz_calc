@@ -236,7 +236,7 @@ $(document).ready(function(){
             for (var j = 0; j < sequence.length; j++) {
                 if (['=', '+', '-', '/', '(', ')', '2'].indexOf(sequence[j]) === -1) {  // если не символ
                     fieldValue = $('.' + sequence[j]).val();  // получаем значение поля
-                    if (fieldValue){sequence[j] = '(' + fieldValue + '*10000)'}  // записываем значение в последовательность
+                    if (fieldValue){sequence[j] = '(' + fieldValue + ')'}  // записываем значение в последовательность
                     else {  // если значение отсутствует, выходим из цикла
                         marker = 1;
                         break;
@@ -250,7 +250,7 @@ $(document).ready(function(){
         }
         else {
             sequence = sequence.join('');  // сливаем выражение в одно строку
-            sequence = eval(sequence) / 10000;
+            sequence = eval(sequence).toFixed(3);
             return sequence;
         }
 	}
