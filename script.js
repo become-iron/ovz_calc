@@ -97,6 +97,7 @@ var
         55 : 'ZB',
         56 : 'ZC'
     },
+
     // ОТВЕРСТИЯ
     variationsHoles = [
         // указываются коды
@@ -223,7 +224,7 @@ $(document).ready(function(){
          /*
          ПОДСЧЁТ ЗНАЧЕНИЯ ВЫРАЖЕНИЯ
          Принимает:
-            expression (massive) математическое выражение
+            expression (array) математическое выражение
          Возвращает:
             (int) результат
          */
@@ -258,7 +259,6 @@ $(document).ready(function(){
     function calc() {
         for (var i = 0; i < inputs.length; ++i) {
             fieldName = '.' + inputs[i][0];
-            //$(fieldName).val( $(fieldName).val().replace(',', '.') );
             if ($(fieldName).val() === '') {  // если поле пустое, пробуем для него просчитать значение
                 $(fieldName).val(calculate(inputs[i][2]));
             }
@@ -339,7 +339,6 @@ $(document).ready(function(){
     }
 
 
-
     // выбор квалитета
     $(nmFldQualHole).change( function() {
         select_tol_zones(0);
@@ -347,10 +346,6 @@ $(document).ready(function(){
     $(nmFldQualShaft).change( function() {
         select_tol_zones(1);
     });
-    //$('.D').change( function() {
-    //    select_tol_zones();
-    //});
-
 
     // выбор поля допуска
     $('.tol_zone').change( function() {
@@ -409,7 +404,7 @@ $(document).ready(function(){
     });
 
     // клик по кнопке сброса
-    $('.reset').click(function(){
+    $('.reset').click( function() {
         $('.graph').css('visibility', 'hidden');
         $('.fit').text('неизвестна');
         $('.sys_fit').text('неизвестна');
@@ -417,7 +412,7 @@ $(document).ready(function(){
         $(nmFldZoneShaft).prop("disabled", true);
     });
 
-    $(".plot").click(function() {
+    $(".plot").click( function() {
         if ($('.graph').css('visibility') === 'hidden') {
             $('.graph').css('visibility', 'visible');
         }
