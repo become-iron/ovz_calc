@@ -1,0 +1,24 @@
+{
+  "name": "OVZ Calculator",
+  "homepage": "https://github.com/become-iron/ovz_calc",
+  "authors": [
+    "become-iron",
+    "Alex1166"
+  ],
+  "description": "",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "WTFPL",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.5.6",
+    "jquery": "~2.1.4"
+  }
+}
