@@ -1,0 +1,30 @@
+form {
+    /*margin: 20px auto;*/
+    /*width: 500px;*/
+}
+
+table {
+    border-collapse: collapse; /* Убираем двойные границы между ячейками */
+    border: 1px solid #000; /* Рамка вокруг таблицы */
+}
+td {
+    padding: 4px; /* Поля вокруг текста */
+    border: 1px solid; /* Рамка вокруг ячеек */
+}
+
+select, input {
+    width: 50px;
+}
+
+select#nom_size {
+    width: 90px;
+}
+
+input#add {
+    width: 70px;
+}
+
+textarea#code {
+    width: 250px;
+    height: 500px;
+}

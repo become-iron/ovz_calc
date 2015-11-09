@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="add_qualitets.css">
+    <title>Добавить новые квалитеты</title>
+</head>
+<body>
+<form>
+    <table>
+        <tr>
+            <td>D</td>
+            <td>квалитет</td>
+            <td>поле допуска</td>
+            <td>ES/es</td>
+            <td>EI/ei</td>
+        </tr>
+        <tr>
+            <td>
+                <select id="nom_size"></select>
+            </td>
+            <td>
+                <select id="qual"></select>
+            </td>
+            <td>
+                <select id="tol_zone"></select>
+            </td>
+            <td>
+                <input type="text" id="es">
+            <td>
+                <input type="text" id="ei">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <input id="add" type="button" value="Добавить">
+            </td>
+            <td>
+                <input type="reset">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <textarea id="code"></textarea>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../js/qualitets.js"></script>
+<script src="add_qualitets.js"></script>
+</body>
+</html>
