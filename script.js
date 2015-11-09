@@ -176,18 +176,23 @@ var
     ],
 
     add_fields = [['fit', 'Посадка:', 'неизвестна'], ['sys_fit', 'Cистема:', 'неизвестна']],
-    reFieldValue = /^(\-?[0-9]+(\.?[0-9]+)?)?$/,  // валидность числа TODO улучшить
-    fieldName,
+    nmFldQualHole = '.qual_hole',
+    nmFldQualShaft = '.qual_shaft',
+    nmFldZoneHole = '.zone_hole',
+    nmFldZoneShaft = '.zone_shaft',
     fields = [
-        ['qual qual_hole', 'Квалитет отверстия'],
-        ['tol_zone zone_hole', 'Поле допуска отверстия'],
-        ['qual qual_shaft', 'Квалитет вала'],
-        ['tol_zone zone_shaft', 'Поле допуска вала']
+        // ATTENTION порядок в списке используется для порядка вывода
+        ['qual ' + nmFldQualHole.slice(1), 'Квалитет отверстия'],
+        ['tol_zone ' + nmFldZoneHole.slice(1), 'Поле допуска отверстия'],
+        ['qual ' + nmFldQualShaft.slice(1), 'Квалитет вала'],
+        ['tol_zone ' + nmFldZoneShaft.slice(1), 'Поле допуска вала']
     ],
+
+    reFieldValue = /^(\-?[0-9]+(\.?[0-9]+)?)?$/,  // валидность числа TODO улучшить
+
+    fieldName,
     code = '',
     i;
-
-var nom_zone;
 
 
 $(document).ready(function(){
@@ -204,12 +209,12 @@ $(document).ready(function(){
         code += '<tr><td>' + add_fields[j][1] + '</td><td><div class="' + add_fields[j][0] + '">' + add_fields[j][2] + '</div></td><td></td></tr>';
     }
     $('table').append(code);
-    $(".zone_hole").prop("disabled", true);
-    $(".zone_shaft").prop("disabled", true);
+    $(nmFldZoneHole).prop("disabled", true);
+    $(nmFldZoneShaft).prop("disabled", true);
     for (var key in qualitets) {  // TODO
         if (qualitets.hasOwnProperty(key) && /^0$|^[1-9]\d*$/.test(key) && key <= 4294967294) {
-            $('.qual_hole').append($('<option value="' + key + '">' + qualitets[key] + '</option>'));
-            $('.qual_shaft').append($('<option value="' + key + '">' + qualitets[key] + '</option>'));
+            $(nmFldQualHole).append($('<option value="' + key + '">' + qualitets[key] + '</option>'));
+            $(nmFldQualShaft).append($('<option value="' + key + '">' + qualitets[key] + '</option>'));
         }
     }
 
@@ -271,57 +276,64 @@ $(document).ready(function(){
         else {$('.sys_fit').text('неизвестна')}
     }
 
-    function select_tol_zones(mark) {
+
+    function discover_nom_zone() {
         // определение области номинального размера
-        var valNomField = Number($('.D').val());
-        var keyNomZone;  // код предела номинального размера
+        var valNomField = Number($('.D').val()),
+            keyNomZone;  // код предела номинального размера
         for (i = 0; i < nom_zones.length; i++) {
             if (nom_zones[i][0] < valNomField && valNomField <= nom_zones[i][1]) {
                 keyNomZone = nom_zones[i][2];
                 break;
             }
             else if (valNomField == 1) {
-            keyNomZone = 0;
-            break;
+                keyNomZone = 0;
+                break;
             }
         }
+        return keyNomZone;
+    }
+
+
+    function select_tol_zones(mark) {
+        var keyNomZone = discover_nom_zone();
 
         if (mark === 0) {
-            var qual_hole = $('.qual_hole').val(),
-                lstHoleZones = [];
+            var valQualHole = $(nmFldQualHole).val(),
+                listHoleZones = [];
             for (i = 0; i < variationsHoles.length; i++) {
-                if (variationsHoles[i][0] == keyNomZone && variationsHoles[i][1] == qual_hole && lstHoleZones.indexOf(variationsHoles[i][2]) == -1) {
-                    lstHoleZones.push(variationsHoles[i][2]);
+                if (variationsHoles[i][0] == keyNomZone && variationsHoles[i][1] == valQualHole && listHoleZones.indexOf(variationsHoles[i][2]) == -1) {
+                    listHoleZones.push(variationsHoles[i][2]);
                 }
             }
-            $('.zone_hole').empty();
-            if (lstHoleZones.length > 0) {
-                $('.zone_hole').append($('<option value="100">—</option>'));
-                for (i = 0; i < lstHoleZones.length; i++) {
-                    $('.zone_hole').append($('<option value="' + lstHoleZones[i] + '">' + tol_zones[lstHoleZones[i]] + '</option>'));
-                    $(".zone_hole").prop("disabled", false);
+            $(nmFldZoneHole).empty();
+            if (listHoleZones.length > 0) {
+                $(nmFldZoneHole).append($('<option value="100">—</option>'));
+                for (i = 0; i < listHoleZones.length; i++) {
+                    $(nmFldZoneHole).append($('<option value="' + listHoleZones[i] + '">' + tol_zones[listHoleZones[i]] + '</option>'));
+                    $(nmFldZoneHole).prop("disabled", false);
                 }
             }
-            else {$(".zone_hole").prop("disabled", true);}
+            else {$(nmFldZoneHole).prop("disabled", true);}
         }
         else if (mark === 1) {
-            $('.zone_shaft').empty();
-            var qual_shaft = $('.qual_shaft').val(),
-                lstShaftZones = [];
+            $(nmFldZoneShaft).empty();
+            var valQualShaft = $(nmFldQualShaft).val(),
+                listShaftZones = [];
             for (var i = 0; i < variationsShafts.length; i++) {
-                if (variationsShafts[i][0] == keyNomZone && variationsShafts[i][1] == qual_shaft && lstShaftZones.indexOf(variationsShafts[i][2]) == -1) {
-                    lstShaftZones.push(variationsShafts[i][2]);
+                if (variationsShafts[i][0] == keyNomZone && variationsShafts[i][1] == valQualShaft && listShaftZones.indexOf(variationsShafts[i][2]) == -1) {
+                    listShaftZones.push(variationsShafts[i][2]);
                 }
             }
-            if (lstShaftZones.length > 0) {
-                $('.zone_shaft').append($('<option value="100">—</option>'));
-                for (i = 0; i < lstShaftZones.length; i++) {
-                    $('.zone_shaft').append($('<option value="' + lstShaftZones[i] + '">' + tol_zones[lstShaftZones[i]] + '</option>'));
-                    $(".zone_shaft").prop("disabled", false);
+            if (listShaftZones.length > 0) {
+                $(nmFldZoneShaft).append($('<option value="100">—</option>'));
+                for (i = 0; i < listShaftZones.length; i++) {
+                    $(nmFldZoneShaft).append($('<option value="' + listShaftZones[i] + '">' + tol_zones[listShaftZones[i]] + '</option>'));
+                    $(nmFldZoneShaft).prop("disabled", false);
                 }
             }
             else {
-                $(".zone_shaft").prop("disabled", true);
+                $(nmFldZoneShaft).prop("disabled", true);
             }
         }
     }
@@ -329,10 +341,10 @@ $(document).ready(function(){
 
 
     // выбор квалитета
-    $('.qual_hole').change( function() {
+    $(nmFldQualHole).change( function() {
         select_tol_zones(0);
     });
-    $('.qual_shaft').change( function() {
+    $(nmFldQualShaft).change( function() {
         select_tol_zones(1);
     });
     //$('.D').change( function() {
@@ -384,8 +396,8 @@ $(document).ready(function(){
         $('.graph').css('visibility', 'hidden');
         $('.fit').text('неизвестна');
         $('.sys_fit').text('неизвестна');
-        $(".zone_hole").prop("disabled", true);
-        $(".zone_shaft").prop("disabled", true);
+        $(nmFldZoneHole).prop("disabled", true);
+        $(nmFldZoneShaft).prop("disabled", true);
     });
 
     $(".plot").click(function() {
