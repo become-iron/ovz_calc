@@ -355,16 +355,33 @@ $(document).ready(function(){
     // выбор поля допуска
     $('.tol_zone').change( function() {
         var valQualHole = Number( $('.qual_hole :selected').val() ),
-            valQualShaft = Number( $('.qual_shaft :selected').val() );
+            valQualShaft = Number( $('.qual_shaft :selected').val() ),
+            valTolZoneHole = Number( $('.zone_hole :selected').val() ),
+            valTolZoneShaft = Number( $('.zone_shaft :selected').val() ),
+            keyNomZone = discover_nom_zone();
         if (valQualHole > 0) {
-            // TODO если не будет искомого элемента, может вернуться что-то странное, наверное
-            $('.ES').val(variationsHoles[valQualHole][3][0] / 1000);
-            $('.EI').val(variationsHoles[valQualHole][3][1] / 1000);
+            for (i = 0; i < variationsHoles.length; i++) {
+                if (variationsHoles[i][0] == keyNomZone &&
+                    variationsHoles[i][1] == valQualHole &&
+                    variationsHoles[i][2] == valTolZoneHole) {
+                    // TODO если не будет искомого элемента, может вернуться что-то странное, наверное
+                    $('.ES').val(variationsHoles[i][3][0] / 1000);  // делим на 1000 для перевода в мкм
+                    $('.EI').val(variationsHoles[i][3][1] / 1000);
+                    break;
+                }
+            }
         }
         if (valQualShaft > 0) {
-            // TODO если не будет искомого элемента, может вернуться что-то странное, наверное
-            $('.es').val(variationsShafts[valQualShaft][3][0] / 1000);
-            $('.ei').val(variationsShafts[valQualShaft][3][1] / 1000);
+            for (i = 0; i < variationsShafts.length; i++) {
+                if (variationsShafts[i][0] == keyNomZone &&
+                    variationsShafts[i][1] == valQualShaft &&
+                    variationsShafts[i][2] == valTolZoneShaft) {
+                    // TODO если не будет искомого элемента, может вернуться что-то странное, наверное
+                    $('.es').val(variationsShafts[i][3][0] / 1000);
+                    $('.ei').val(variationsShafts[i][3][1] / 1000);
+                    break;
+                }
+            }
         }
     });
 
@@ -374,7 +391,7 @@ $(document).ready(function(){
             calc();
         }
     });
-    $(".calc").click(calc); // по клику по кнопке 'Считать'
+    $(".calc").click( calc() ); // по клику по кнопке 'Считать'
 
     // проверка валидности значений в полях
     $('input').keyup( function() {  // TODO улучшить, не работает для поля "D"
