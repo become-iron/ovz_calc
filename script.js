@@ -116,20 +116,15 @@ var
         [4, 7, 39, [18, 0]],
         [5, 7, 39, [21, 0]],
         [6, 7, 39, [21, 0]],
-        [0, 8, 38, [12, 2]],
-        [1, 8, 38, [16, 4]],
-        [2, 8, 38, [20, 5]],
-        [3, 8, 38, [24, 6]],
-        [4, 8, 38, [24, 6]],
-        [5, 8, 38, [28, 7]],
-        [6, 8, 38, [28, 7]],
-        [0, 8, 39, [10, 0]],
-        [1, 8, 39, [12, 0]],
-        [2, 8, 39, [15, 0]],
-        [3, 8, 39, [18, 0]],
-        [4, 8, 39, [18, 0]],
-        [5, 8, 39, [21, 0]],
-        [6, 8, 39, [21, 0]]],
+
+        [0, 8, 39, [14, 0]],
+        [1, 8, 39, [18, 0]],
+        [2, 8, 39, [22, 0]],
+        [3, 8, 39, [27, 0]],
+        [4, 8, 39, [27, 0]],
+        [5, 8, 39, [33, 0]],
+        [6, 8, 39, [33, 0]]
+    ],
     // ВАЛЫ
     variationsShafts = [
         [0, 7, 11, [0, -10]],
@@ -212,7 +207,7 @@ $(document).ready(function(){
     $('table').append(code);
     $(nmFldZoneHole).prop("disabled", true);
     $(nmFldZoneShaft).prop("disabled", true);
-    for (var key in qualitets) {  // TODO
+    for (var key in qualitets) {
         if (qualitets.hasOwnProperty(key) && /^0$|^[1-9]\d*$/.test(key) && key <= 4294967294) {
             $(nmFldQualHole).append($('<option value="' + key + '">' + qualitets[key] + '</option>'));
             $(nmFldQualShaft).append($('<option value="' + key + '">' + qualitets[key] + '</option>'));
