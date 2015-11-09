@@ -112,7 +112,7 @@ $(document).ready(function(){
         for (var i = 0; i < inputs.length; ++i) {
             fieldName = '.' + inputs[i][0];
             if ($(fieldName).val() === '') {  // если поле пустое, пробуем для него просчитать значение
-                $(fieldName).val(calculate(inputs[i][2]));
+                $(fieldName).val( calculate(inputs[i][2]) );
             }
         }
 
@@ -148,14 +148,20 @@ $(document).ready(function(){
 
 
     function select_tol_zones(mark) {
+        // добавить значения пределов отклонений в выпадающий список
+        // TODO разрулить этот бардак
         var keyNomZone = discover_nom_zone();
 
         if (mark === 0) {
             var valQualHole = $(nmFldQualHole).val(),
                 listHoleZones = [];
-            for (i = 0; i < variationsHoles.length; i++) {
-                if (variationsHoles[i][0] == keyNomZone && variationsHoles[i][1] == valQualHole && listHoleZones.indexOf(variationsHoles[i][2]) == -1) {
-                    listHoleZones.push(variationsHoles[i][2]);
+            for (i = 0; i < variations.length; i++) {
+                if (variations[i][0] == 0 &&  // отверстие
+                    variations[i][1] == keyNomZone &&
+                    variations[i][2] == valQualHole &&
+                    listHoleZones.indexOf(variations[i][3]) == -1  // нет ли уже этой зоны в массиве
+                ) {
+                    listHoleZones.push(variations[i][3]);
                 }
             }
             $(nmFldZoneHole).empty();
@@ -168,15 +174,20 @@ $(document).ready(function(){
             }
             else {$(nmFldZoneHole).prop("disabled", true);}
         }
+
         else if (mark === 1) {
-            $(nmFldZoneShaft).empty();
             var valQualShaft = $(nmFldQualShaft).val(),
                 listShaftZones = [];
-            for (var i = 0; i < variationsShafts.length; i++) {
-                if (variationsShafts[i][0] == keyNomZone && variationsShafts[i][1] == valQualShaft && listShaftZones.indexOf(variationsShafts[i][2]) == -1) {
-                    listShaftZones.push(variationsShafts[i][2]);
+            for (var i = 0; i < variations.length; i++) {
+                if (variations[i][0] == 1 &&  // вал
+                    variations[i][1] == keyNomZone &&
+                    variations[i][2] == valQualShaft &&
+                    listShaftZones.indexOf(variations[i][3]) == -1
+                ) {
+                    listShaftZones.push(variations[i][3]);
                 }
             }
+            $(nmFldZoneShaft).empty();
             if (listShaftZones.length > 0) {
                 $(nmFldZoneShaft).append($('<option value="100">—</option>'));
                 for (i = 0; i < listShaftZones.length; i++) {
@@ -207,25 +218,27 @@ $(document).ready(function(){
             valTolZoneShaft = Number( $('.zone_shaft :selected').val() ),
             keyNomZone = discover_nom_zone();
         if (valQualHole > 0) {
-            for (i = 0; i < variationsHoles.length; i++) {
-                if (variationsHoles[i][0] == keyNomZone &&
-                    variationsHoles[i][1] == valQualHole &&
-                    variationsHoles[i][2] == valTolZoneHole) {
+            for (i = 0; i < variations.length; i++) {
+                if (variations[i][0] == 0 &&
+                    variations[i][1] == keyNomZone &&
+                    variations[i][2] == valQualHole &&
+                    variations[i][3] == valTolZoneHole) {
                     // TODO если не будет искомого элемента, может вернуться что-то странное, наверное
-                    $('.ES').val(variationsHoles[i][3][0] / 1000);  // делим на 1000 для перевода в мкм
-                    $('.EI').val(variationsHoles[i][3][1] / 1000);
+                    $('.ES').val(variations[i][4][0] / 1000);  // делим на 1000 для перевода в мкм
+                    $('.EI').val(variations[i][4][1] / 1000);
                     break;
                 }
             }
         }
         if (valQualShaft > 0) {
-            for (i = 0; i < variationsShafts.length; i++) {
-                if (variationsShafts[i][0] == keyNomZone &&
-                    variationsShafts[i][1] == valQualShaft &&
-                    variationsShafts[i][2] == valTolZoneShaft) {
+            for (i = 0; i < variations.length; i++) {
+                if (variations[i][0] == 1 &&
+                    variations[i][1] == keyNomZone &&
+                    variations[i][2] == valQualShaft &&
+                    variations[i][3] == valTolZoneShaft) {
                     // TODO если не будет искомого элемента, может вернуться что-то странное, наверное
-                    $('.es').val(variationsShafts[i][3][0] / 1000);
-                    $('.ei').val(variationsShafts[i][3][1] / 1000);
+                    $('.es').val(variations[i][4][0] / 1000);
+                    $('.ei').val(variations[i][4][1] / 1000);
                     break;
                 }
             }
