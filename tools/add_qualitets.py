@@ -17,7 +17,7 @@ else:
     p = 1
 
 j = 0
-for i in range(25):
+for i in range(1):
     if j == 1:
         j = 0
         continue
@@ -56,7 +56,7 @@ for i in range(25):
             a.append([p, i+1, k, n, [x, y]])
             j = 1
 
-file_path = 'E:/Document/ИТМО/3 семестр/ОВЗ/GOST/result'
+file_path = 'result'
 with open(file_path, "w", encoding="utf-8") as w:
     for item in a:
         w.write(str(item) + "," + "\n")
