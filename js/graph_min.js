@@ -18,7 +18,10 @@ $(document).ready(function(){
         QHoleKey,
         QShaftKey,
         zHole,
-        zShaft;
+        zShaft,
+
+        parentChart = $('.chart'),
+        warningMessage = $('.warn');
 
     function draw() {
         // сам svg элемент
@@ -35,10 +38,6 @@ $(document).ready(function(){
 
         D = $('.D').val();
 
-        ES = $('.ES').text();
-        es = $('.es').text();
-        EI = $('.EI').text();
-        ei = $('.ei').text();
         Em = $('.Em').text();
         em = $('.em').text();
 
@@ -100,7 +99,7 @@ $(document).ready(function(){
         }
 
         // расставляем размеры
-        var mult = 1;
+        var mult = 1.25;
 
         svgContainer.attr("height", mult * svgHeight);
         MainGroup.attr('transform', "translate(" + 0 + "," + (mult * svgTrans) + ") scale(" + mult + ")");
@@ -108,26 +107,6 @@ $(document).ready(function(){
         //var svgWidth = $("svg").parent().width();
         var svgWidth = 350;
         svgContainer.attr("width", mult * svgWidth);
-
-        // рисуем отверстие и вал
-        var jsonHoleShaft = [
-            { "x_axis": 100, "y_axis": 0, "width": 50, "height": i * TD, "color" : "#ffff99" },
-            { "x_axis": 200, "y_axis": 0 + dif, "width": 50, "height": i * Td, "color" : "#999999" }
-        ];
-
-        var HoleShaft = MainGroup.selectAll("HoleShaft")
-            .data(jsonHoleShaft)
-            .enter()
-            .append("rect");
-
-        var HoleShaftAttributes = HoleShaft
-            .attr("x", function (d) { return d.x_axis; })
-            .attr("y", function (d) { return d.y_axis; })
-            .attr("height", function (d) { return d.height; })
-            .attr("width", function (d) { return d.width; })
-            .style("fill", function(d) { return d.color; })
-            .style("stroke", "#000")
-            .attr("stroke-width", 0.75);
 
 
         // рисуем линии отклонений
@@ -263,7 +242,7 @@ $(document).ready(function(){
             } else {
                 DEnd = DEnd + 25
             }
-            if (DEnd >= svgHeight) {
+            if (DEnd >= svgHeight - svgTrans) {
                 DEnd = svgHeight - svgTrans - 25
             }
 
@@ -315,6 +294,27 @@ $(document).ready(function(){
             .attr("fill", "black");
 
 
+        // рисуем отверстие и вал
+        var jsonHoleShaft = [
+            { "x_axis": 100, "y_axis": 0, "width": 50, "height": i * TD, "color" : "#ffff99" },
+            { "x_axis": 200, "y_axis": 0 + dif, "width": 50, "height": i * Td, "color" : "#999999" }
+        ];
+
+        var HoleShaft = MainGroup.selectAll("HoleShaft")
+            .data(jsonHoleShaft)
+            .enter()
+            .append("rect");
+
+        var HoleShaftAttributes = HoleShaft
+            .attr("x", function (d) { return d.x_axis; })
+            .attr("y", function (d) { return d.y_axis; })
+            .attr("height", function (d) { return d.height; })
+            .attr("width", function (d) { return d.width; })
+            .style("fill", function(d) { return d.color; })
+            .style("stroke", "#000")
+            .attr("stroke-width", 0.75);
+
+
         // Рисуем допуски
         var jsonTolText = [];
 
@@ -364,23 +364,33 @@ $(document).ready(function(){
         parentChart.append(canvas);
     }
 
-    $(".plot").click(function () {
-        var parentChart = $('.chart');
-        var warningMessage = $('.warn');
+    function warning(){
+        parentChart.css('visibility', 'hidden');
+        warningMessage.css('visibility', 'visible');
+    }
 
+    $(".plot").click(function () {
         parentChart.empty();
         warningMessage.css('visibility', 'hidden');
         if ($('.graph').css('visibility') == 'visible') {
-            if ($('.ES').text() && $('.EI').text() && $('.es').text() && $('.ei').text() && $('.TD').text() && $('.Td').text()) {
-                draw();
-                if (navigator.userAgent.search("Firefox") == -1){
-                    convertToPNG();
+            ES = $('.ES').text();
+            es = $('.es').text();
+            EI = $('.EI').text();
+            ei = $('.ei').text();
+            if (ES && EI && es && ei && $('.TD').text() && $('.Td').text()) {
+                if ((Number(ES) > Number(EI)) && (Number(es) > Number(ei))){
+                    draw();
+                    if (navigator.userAgent.search("Firefox") == -1){
+                        convertToPNG();
+                    }
+                } else {
+                    warningMessage.text('Невозможно построить диаграмму: данные введены неверно');
+                    warning()
                 }
                 parentChart.css('visibility', 'visible');
             } else {
                 warningMessage.text('Недостаточно данных для построения диаграммы');
-                parentChart.css('visibility', 'hidden');
-                warningMessage.css('visibility', 'visible');
+                warning()
             }
         }
     });
