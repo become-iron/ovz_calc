@@ -6,7 +6,7 @@
 
 [**>> Мобильная версия <<**](https://become-iron.github.io/ovz_calc/min_calc.html)
 
-[**>> Мобильная версия <<**](https://become-iron.github.io/ovz_calc/app_build/builds/OVZCalc.apk)
+[**>> Приложение <<**](https://github.com/become-iron/ovz_calc/raw/master/app_build/builds/OVZCalc.apk)
 
 ### Зависимости
 * Jquery 2.1.4
@@ -25,7 +25,7 @@
 ![](stuff/mobile.png)
 
 ### Приложение
-![](stuff/application.png)
+![](stuff/application.jpg)
 
 ### TODO
 * ~~введение квалитетов~~
