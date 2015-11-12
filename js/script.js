@@ -120,6 +120,8 @@ $(document).ready(function(){
         if ($('.Smin').val() === '0') {$('.fit').text('скользящая')}
         else if ($('.Nmin').val() === '0') {$('.fit').text('легко прессовая')}
         else if (($('.Smax').val() === $('.Nmax').val()) && $('.Smax').val()) {$('.fit').text('переходная')}
+        else if ($('.Smin').val() > 0) {$('.fit').text('с зазором')}
+        else if ($('.Nmin').val() > 0) {$('.fit').text('с натягом')}
         else {$('.fit').text('неизвестна')}
 
         // определение системы (отверстия или вала)
