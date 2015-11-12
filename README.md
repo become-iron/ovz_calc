@@ -4,9 +4,9 @@
 
 [**>> Онлайн-версия <<**](https://become-iron.github.io/ovz_calc)
 
-[**>> Мобильная версия <<**](https://become-iron.github.io/ovz_calc/min_calc.html)
+[**>> Мобильная версия <<**](https://become-iron.github.io/ovz_calc/calc_min.html)
 
-[**>> Приложение <<**](https://github.com/become-iron/ovz_calc/raw/master/app_build/builds/OVZCalc.apk)
+[**>> Android-приложение <<**](https://github.com/become-iron/ovz_calc/raw/master/app_build/builds/OVZCalc.apk)
 
 ### Зависимости
 * Jquery 2.1.4
