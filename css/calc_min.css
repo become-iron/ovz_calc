@@ -2,9 +2,12 @@ table {
     margin-top: 5px;
 }
 td {
-    padding: 2px 4px 2px 4px;
+    padding: 2px 14px 2px 12px;
 }
 .graph {
     display: none;
-    padding-left: 5px;
+}
+.toolt {
+    padding-left: 10px;
+    color: #337AB7;
 }

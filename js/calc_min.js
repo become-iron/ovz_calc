@@ -64,7 +64,7 @@ $(document).ready(function() {
             '</tr>'
     }
     code +=
-            '<tr class="graph">' +
+            '<tr class="graph success">' +
             '<td colspan="2">' +
             '<div class="chart"></div>' +
             '<div class="warn"></div>' +
@@ -73,7 +73,7 @@ $(document).ready(function() {
     for (var i = 0; i < inputs.length; ++i) {
         code +=
             '<tr>' +
-            '<td>' + inputs[i][0] + '</td>' +
+            '<td>' + inputs[i][0] + '<span class="glyphicon glyphicon-info-sign text-right toolt" data-toggle="tooltip" data-placement="right" title="' + inputs[i][1] + '"></span></td>' +
             '<td><div class="' + inputs[i][0] + '"></td>' +
             //'<td>' + inputs[i][1] + '</td>' +
             //'<td>' + inputs[i][2] + '</td>' +
@@ -98,6 +98,7 @@ $(document).ready(function() {
         }
     }
 
+    $('[data-toggle="tooltip"]').tooltip();
 
 
 
