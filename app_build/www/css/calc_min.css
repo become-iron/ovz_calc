@@ -1,0 +1,13 @@
+table {
+    margin-top: 5px;
+}
+td {
+    padding: 2px 14px 2px 12px;
+}
+.graph {
+    display: none;
+}
+.toolt {
+    padding-left: 10px;
+    color: #337AB7;
+}

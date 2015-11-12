@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.phonegap.ovzcalc" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>OVZCalc</name>
+    <description>
+        Приложение позволяет расчитывать допуски и посадки валов и отверстий
+    </description>
+    <content src="index.html" />
+    <icon src="img/tools6-32.png" platform="android" width="32" height="32" />
+
+    <platform name="android">
+        <splash src="img/tools6-128.png" density="land-hdpi"/>
+        <splash src="img/tools6-128.png" density="land-ldpi"/>
+        <splash src="img/tools6-128.png" density="land-mdpi"/>
+        <splash src="img/tools6-128.png" density="land-xhdpi"/>
+
+        <splash src="img/tools6-128.png" density="port-hdpi"/>
+        <splash src="img/tools6-128.png" density="port-ldpi"/>
+        <splash src="img/tools6-128.png" density="port-mdpi"/>
+        <splash src="img/tools6-128.png" density="port-xhdpi"/>
+    </platform>
+
+    <preference name="SplashScreenDelay" value="10000" />
+</widget>
