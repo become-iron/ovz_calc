@@ -99,13 +99,18 @@ $(document).ready(function(){
         }
 
         // расставляем размеры
-        var mult = 1.25;
+        var mult = 1;
 
         svgContainer.attr("height", mult * svgHeight);
         MainGroup.attr('transform', "translate(" + 0 + "," + (mult * svgTrans) + ") scale(" + mult + ")");
 
-        //var svgWidth = $("svg").parent().width();
-        var svgWidth = 350;
+        var wdif;
+        if (es.length > ei.length){
+            wdif = es.length
+        } else {
+            wdif = ei.length
+        }
+        var svgWidth = 250 + 60 + 3.5 * wdif;
         svgContainer.attr("width", mult * svgWidth);
 
 
@@ -221,7 +226,7 @@ $(document).ready(function(){
 
         // рисуем нулевую линию и номинальный размер
         var jsonZeroLine = [
-            { "x1": 0, "y1": i * Number(ES), "x2": 350, "y2": i * Number(ES) }
+            { "x1": 0, "y1": i * Number(ES), "x2": 300, "y2": i * Number(ES) }
         ];
 
         var jsonZeroText = [
