@@ -5,5 +5,6 @@ td {
     padding: 2px 4px 2px 4px;
 }
 .graph {
-    visibility: hidden;
+    display: none;
+    padding-left: 5px;
 }

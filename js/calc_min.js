@@ -50,11 +50,11 @@ $(document).ready(function() {
 
     // ГЕНЕРАЦИЯ ПОЛЕЙ
     code +=
-        '<tr>' +
-        '<td>D</td>' +
-        '<td><input type="number" min="1" max="500" step="1" class="D form-control input-sm"></td>' +
-        //'<td>Номинальный размер</td>' +
-        '</tr>';
+            '<tr>' +
+            '<td>D</td>' +
+            '<td><input type="number" min="1" max="500" step="1" class="D form-control input-sm"></td>' +
+            //'<td>Номинальный размер</td>' +
+            '</tr>';
     for (var k = 0; k < fields.length; k++) {
         code +=
             '<tr>' +
@@ -63,6 +63,13 @@ $(document).ready(function() {
             //'<td>' + fields[k][1] + '</td>' +
             '</tr>'
     }
+    code +=
+            '<tr class="graph">' +
+            '<td colspan="2">' +
+            '<div class="chart"></div>' +
+            '<div class="warn"></div>' +
+            '</td>' +
+            '</tr>';
     for (var i = 0; i < inputs.length; ++i) {
         code +=
             '<tr>' +
@@ -212,8 +219,8 @@ $(document).ready(function() {
 
 
     function calculate(expression){
-         // ПОДСЧЁТ ЗНАЧЕНИЯ ВЫРАЖЕНИЯ
-
+        // ПОДСЧЁТ ЗНАЧЕНИЯ ВЫРАЖЕНИЯ
+        // INFO подсчет реализован очень нерационально
         var sequence,
             fieldValue,  // значение считываемого поля
             marker;  // достаточно ли данных для просчета выражения
@@ -259,8 +266,8 @@ $(document).ready(function() {
         if ($('.Smin').text() === '0') {$('.fit').text('скользящая')}
         else if ($('.Nmin').text() === '0') {$('.fit').text('легко прессовая')}
         else if (($('.Smax').text() === $('.Nmax').val()) && $('.Smax').val()) {$('.fit').text('переходная')}
-        else if ($('.Smin').val() > 0) {$('.fit').text('с зазором')}
-        else if ($('.Nmin').val() > 0) {$('.fit').text('с натягом')}
+        else if ($('.Smin').text() > 0) {$('.fit').text('с зазором')}
+        else if ($('.Nmin').text() > 0) {$('.fit').text('с натягом')}
         else {$('.fit').text('неизвестна')}
 
         // определение системы (отверстия или вала)
@@ -277,7 +284,7 @@ $(document).ready(function() {
         for (var i = 0; i < inputs.length; ++i) {
             $('.' + inputs[i][0]).text( '' );
         }
-        $('.graph').css('visibility', 'hidden');
+        $('.graph').css('display', 'none');
         $('.fit').text('неизвестна');
         $('.sys_fit').text('неизвестна');
         $(nmFldZoneHole).prop("disabled", true);
@@ -285,11 +292,11 @@ $(document).ready(function() {
     });
 
     $(".plot").click( function() {
-        if ($('.graph').css('visibility') === 'hidden') {
-            $('.graph').css('visibility', 'visible');
+        if ($('.graph').css('display') === 'none') {
+            $('.graph').css('display', 'table-row');
         }
         else {
-            $('.graph').css('visibility', 'hidden');
+            $('.graph').css('display', 'none');
         }
     });
 
