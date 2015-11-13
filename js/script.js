@@ -59,28 +59,30 @@ $(document).ready(function(){
         '<td></td>' +
         '</tr>';
     for (var k = 0; k < fields.length; k++) {
-        code += '<tr>' +
-            '<td></td>' +
-            '<td><select class="' + fields[k][0] + ' form-control input-sm"></select></td>' +
-            '<td>' + fields[k][1] + '</td>' +
-            '<td></td>' +
+        code +=
+            '<tr>' +
+                '<td></td>' +
+                '<td><select class="' + fields[k][0] + ' form-control input-sm"></select></td>' +
+                '<td>' + fields[k][1] + '</td>' +
+                '<td></td>' +
             '</tr>'
     }
     for (var i = 0; i < inputs.length; ++i){
         code +=
             '<tr>' +
-            '<td>' + inputs[i][0] + '</td>' +
-            '<td><input type="text" class="field ' + inputs[i][0] + ' form-control input-sm"></td>' +
-            '<td class="text-nowrap">' + inputs[i][1] + '</td>' +
-            '<td>' +  inputs[i][2] +'</td>' +
+                '<td>' + inputs[i][0] + '</td>' +
+                '<td><input type="text" class="field ' + inputs[i][0] + ' form-control input-sm"></td>' +
+                '<td class="text-nowrap">' + inputs[i][1] + '</td>' +
+                '<td class="text-nowrap">' +  inputs[i][2] +'</td>' +
             '</tr>';
     }
     for (var j = 0; j < add_fields.length; j++) {
         code +=
             '<tr>' +
-            '<td>' + add_fields[j][1] + '</td>' +
-            '<td><div class="' + add_fields[j][0] + '">' + add_fields[j][2] + '</div></td>' +
-            '<td></td>' +
+                '<td>' + add_fields[j][1] + '</td>' +
+                '<td><div class="' + add_fields[j][0] + '">' + add_fields[j][2] + '</div></td>' +
+                '<td></td>' +
+                '<td></td>' +
             '</tr>';
     }
     $('table').append(code);
