@@ -70,7 +70,7 @@ $(document).ready(function() {
             '<div class="warn"></div>' +
             '</td>' +
             '</tr>';
-    for (var i = 0; i < inputs.length; ++i) {
+    for (i = 0; i < inputs.length; ++i) {
         code +=
             '<tr>' +
             '<td>' + inputs[i][0] + '<span class="glyphicon glyphicon-info-sign text-right toolt" data-toggle="tooltip" data-placement="right" title="' + inputs[i][1] + '"></span></td>' +
@@ -266,7 +266,7 @@ $(document).ready(function() {
         // определение посадки
         if ($('.Smin').text() === '0') {$('.fit').text('скользящая')}
         else if ($('.Nmin').text() === '0') {$('.fit').text('легко прессовая')}
-        else if (($('.Smax').text() === $('.Nmax').val()) && $('.Smax').val()) {$('.fit').text('переходная')}
+        else if ( $('.Nmax').val() > 0 ) {$('.fit').text('переходная')}
         else if ($('.Smin').text() > 0) {$('.fit').text('с зазором')}
         else if ($('.Nmin').text() > 0) {$('.fit').text('с натягом')}
         else {$('.fit').text('неизвестна')}

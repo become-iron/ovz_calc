@@ -141,9 +141,10 @@ $(document).ready(function(){
         }
 
         // определение посадки
+        // TODO переделать
         if ($('.Smin').val() === '0') {$('.fit').text('скользящая')}
         else if ($('.Nmin').val() === '0') {$('.fit').text('легко прессовая')}
-        else if (($('.Smax').val() === $('.Nmax').val()) && $('.Smax').val()) {$('.fit').text('переходная')}
+        else if ( $('.Nmax').val() > 0 ) {$('.fit').text('переходная')}
         else if ($('.Smin').val() > 0) {$('.fit').text('с гарант. зазором')}
         else if ($('.Nmin').val() > 0) {$('.fit').text('с гарант. натягом')}
         else {$('.fit').text('неизвестна')}
