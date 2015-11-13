@@ -54,20 +54,20 @@ $(document).ready(function(){
     code +=
         '<tr>' +
         '<td>D</td>' +
-        '<td><input type="number" min="1" max="500" step="1" class="field D form-control input-sm"></td>' +
+        '<td><input type="number" min="1" max="500" step="1" class="field D form-control input-sm" autofocus></td>' +
         '<td>Номинальный размер</td>' +
         '<td></td>' +
         '</tr>';
-    for (var k = 0; k < fields.length; k++) {
+    for (i = 0; i < fields.length; i++) {
         code +=
             '<tr>' +
                 '<td></td>' +
-                '<td><select class="' + fields[k][0] + ' form-control input-sm"></select></td>' +
-                '<td>' + fields[k][1] + '</td>' +
+                '<td><select class="' + fields[i][0] + ' form-control input-sm"></select></td>' +
+                '<td>' + fields[i][1] + '</td>' +
                 '<td></td>' +
             '</tr>'
     }
-    for (var i = 0; i < inputs.length; ++i){
+    for (i = 0; i < inputs.length; ++i){
         code +=
             '<tr>' +
                 '<td>' + inputs[i][0] + '</td>' +
@@ -76,11 +76,11 @@ $(document).ready(function(){
                 '<td class="text-nowrap">' +  inputs[i][2] +'</td>' +
             '</tr>';
     }
-    for (var j = 0; j < add_fields.length; j++) {
+    for (i = 0; i < add_fields.length; i++) {
         code +=
             '<tr>' +
-                '<td>' + add_fields[j][1] + '</td>' +
-                '<td><div class="' + add_fields[j][0] + '">' + add_fields[j][2] + '</div></td>' +
+                '<td>' + add_fields[i][1] + '</td>' +
+                '<td><div class="' + add_fields[i][0] + '">' + add_fields[i][2] + '</div></td>' +
                 '<td></td>' +
                 '<td></td>' +
             '</tr>';
@@ -144,8 +144,8 @@ $(document).ready(function(){
         if ($('.Smin').val() === '0') {$('.fit').text('скользящая')}
         else if ($('.Nmin').val() === '0') {$('.fit').text('легко прессовая')}
         else if (($('.Smax').val() === $('.Nmax').val()) && $('.Smax').val()) {$('.fit').text('переходная')}
-        else if ($('.Smin').val() > 0) {$('.fit').text('с зазором')}
-        else if ($('.Nmin').val() > 0) {$('.fit').text('с натягом')}
+        else if ($('.Smin').val() > 0) {$('.fit').text('с гарант. зазором')}
+        else if ($('.Nmin').val() > 0) {$('.fit').text('с гарант. натягом')}
         else {$('.fit').text('неизвестна')}
 
         // определение системы (отверстия или вала)
@@ -238,10 +238,10 @@ $(document).ready(function(){
 
     // выбор поля допуска
     $('.tol_zone').change( function() {
-        var valQualHole = Number( $('.qual_hole :selected').val() ),
-            valQualShaft = Number( $('.qual_shaft :selected').val() ),
-            valTolZoneHole = Number( $('.zone_hole :selected').val() ),
-            valTolZoneShaft = Number( $('.zone_shaft :selected').val() ),
+        var valQualHole = Number( $(nmFldQualHole + ' :selected').val() ),
+            valQualShaft = Number( $(nmFldQualShaft + ' :selected').val() ),
+            valTolZoneHole = Number( $(nmFldZoneHole + ' :selected').val() ),
+            valTolZoneShaft = Number( $(nmFldZoneShaft + ' :selected').val() ),
             keyNomZone = discover_nom_zone();
         if (valQualHole > 0) {
             for (i = 0; i < variations.length; i++) {
