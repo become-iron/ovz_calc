@@ -1,12 +1,3 @@
-/*.form{*/
-    /*!*margin-right: 5px;*!*/
-    /*float:left;*/
-/*}*/
-
-/*.right{*/
-    /*float: left;*/
-/*}*/
-
 .info{
     background-color: #d9ebf2;
     padding: 5px;
@@ -26,26 +17,19 @@ ul{
 }
 
 td{
-    padding: 2px 2px 2px 2px;
+    padding: 2px 2px 2px 4px;
     /*padding: 0;*/
     /*margin: 0;*/
 }
 
-.form-control {
+.form-control, select.input-sm {
     width: 70px;
+    height: 25px;
 }
-
-/*input[type="button"],*/
-/*input[type="reset"] {*/
-    /*padding: 0;*/
-    /*margin: 0;*/
-/*}*/
 
 input[type='text'] {
     background-color: white;
 }
-
-
 
 .btn {
     margin: 3px;
