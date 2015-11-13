@@ -25,7 +25,7 @@
 ![](stuff/mobile.png)
 
 ### Приложение
-![](stuff/application2.jpg)
+![](stuff/application2.png)
 
 ### TODO
 * ~~введение квалитетов~~
