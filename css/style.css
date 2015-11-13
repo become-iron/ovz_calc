@@ -1,11 +1,11 @@
-.form{
-    /*margin-right: 5px;*/
-    float:left;
-}
+/*.form{*/
+    /*!*margin-right: 5px;*!*/
+    /*float:left;*/
+/*}*/
 
-.right{
-    float: left;
-}
+/*.right{*/
+    /*float: left;*/
+/*}*/
 
 .info{
     background-color: #d9ebf2;
@@ -26,25 +26,35 @@ ul{
 }
 
 td{
-    /*padding-right: 5px;*/
-    padding: 0;
-    margin: 0;
+    padding: 2px 2px 2px 2px;
+    /*padding: 0;*/
+    /*margin: 0;*/
 }
 
-.field {
-    width: 60px;
+.form-control {
+    width: 70px;
 }
 
-input[type="button"],
-input[type="reset"] {
-    padding: 0;
-    margin: 0;
-}
+/*input[type="button"],*/
+/*input[type="reset"] {*/
+    /*padding: 0;*/
+    /*margin: 0;*/
+/*}*/
 
 input[type='text'] {
     background-color: white;
 }
 
-select {
-    width: 60px;
+
+
+.btn {
+    margin: 3px;
+}
+
+label {
+    padding-left: 3px;
+}
+
+.container {
+    padding: 5px 0 5px 0;
 }

@@ -2,26 +2,35 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/style.css">
     <!--Icon made by Freepik from www.flaticon.com is licensed under CC BY 3.0-->
     <link href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABmElEQVQ4jYWSoVLkQBCGW6w4sQJxgipOICORJ1aMXCbdO3+2Nm/AA5zYB8AhEXhOIKgKyXSofYAVKIoCxD0AdbUCgUAgECuC2CQkuSzXVWOm6/vyd0+IOhUqfonitHtPRBQn8dAmdrevR0RE1k/GrChYUTQlcRIPWXHGioJzd9ILjxX7rHisBKxYW8UBERFnOO5KW2WWZtCB38RHXPVZ8cqKwvrJuLoTH40kk5+bub2bN+BCMnfU/EAl4NxdykK+i49GrHjjzM2q+V44d++iuGDFmhVrztyMiMgmdrcWVCd376xYQbFDVnFQQmYzr5tVkjLZqgVvzmMdvxQsWpE/JTUUejeXVALx0cgszaD9fOW26wWlErDipSF4lVSC3hfoVuijKSseemLfcu7sl3C93U9owbl7bizveWsSVpgWnEdXZmkGkkrwX4nk7ogVfxvwOS/ivXqsbBKK4q6R7D68nk6IqP6FV6HiqWzexEk8/Ge8niSH2fQHiQKsuGGFboO3SULv5mR+m2+iOOUMx1/BLYniT6h4klSCDzghO5zjxNIwAAAAAElFTkSuQmCC" rel="icon" type="image/x-icon">
 	<title>Калькулятор ОВЗ. Допуски и посадки</title>
 </head>
 <body>
-	<div class="main">
-        <div class="form">
+<div class="container">
+    <div class="row">
+
+
+        <div class="col-md-6">
             <form>
-                <table>
-                    <tr>
-                        <td><input type="button" value="Считать" class="btn calc"></td>
-                        <td><input type="reset" value="Сброс" class="btn reset"></td>
-                        <td><input type="checkbox" id="auto-upd"><label for="auto-upd">Обновлять автоматически</label></td>
-                        <td><input type="button" value="Показать/скрыть схему" class="btn plot"></td>
+                <table class="table-bordered table-hover">
+                    <tr class="info">
+                        <td><input type="button" value="Считать" class="btn calc btn-primary btn-sm"></td>
+                        <td><input type="reset" value="Сброс" class="btn reset btn-primary btn-sm"></td>
+                        <td><input type="checkbox" id="auto-upd"><label for="auto-upd">Автообновление</label>
+                        </td>
+                        <td><input type="button" value="Показать/скрыть схему" class="btn plot btn-primary btn-sm"></td>
                     </tr>
                 </table>
             </form>
         </div>
-        <div class="right">
+
+
+        <div class="col-md-6">
             <div class="info">
                 <b>Справочная информация</b><br>
                 <ul>
@@ -37,8 +46,12 @@
                 <div class="warn"></div>
             </div>
         </div>
-	</div>
+
+
+    </div>
+</div>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/d3/d3.min.js" charset="utf-8"></script>
     <script src="js/qualitets.js"></script>
     <script src="js/script.js"></script>

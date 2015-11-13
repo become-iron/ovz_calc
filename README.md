@@ -9,9 +9,9 @@
 [**>> Android-приложение <<**](https://github.com/become-iron/ovz_calc/raw/master/app_build/builds/OVZCalc.apk)
 
 ### Зависимости
-* Jquery 2.1.4
-* D3 3.5.6
-* Bootstrap 3.3.5 (для мобильной версии)
+* JQuery 2.1.4
+* D3.js 3.5.6
+* Bootstrap 3.3.5
 
 ### Справочная информация
 1. Верность подсчёта гарантируется верностью введённых данных
@@ -25,7 +25,7 @@
 ![](stuff/mobile.png)
 
 ### Приложение
-![](stuff/application.jpg)
+![](stuff/application2.jpg)
 
 ### TODO
 * ~~введение квалитетов~~
