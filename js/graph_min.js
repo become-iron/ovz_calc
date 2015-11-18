@@ -63,33 +63,33 @@ $(document).ready(function(){
 
         var DopD = TD,
             Dopd = Td,
-            i = 1;
+            inc = 1;
 
         if (TD != 0 && Td != 0) {
             if (TD < 20 || Td < 20) {
                 while ((DopD < 20 && Dopd < 100)|| (Dopd < 20 && DopD < 100)) {
                     Dopd = 2 * Dopd;
                     DopD = 2 * DopD;
-                    i = i * 2;
+                    inc = inc * 2;
                 }
             } else {
                 if (TD > 100 || Td > 100) {
                     while ((DopD > 20 && Dopd > 100)|| (Dopd > 20 && DopD > 100)) {
                         Dopd = Dopd / 2;
                         DopD = DopD / 2;
-                        i = i * 2;
+                        inc = inc * 2;
                     }
-                    i = 1 / i;
+                    inc = 1 / inc;
                 }
             }
-            dif = i * dif;
+            dif = inc * dif;
         } else {
             TD = 50;
             Td = 50;
         }
 
         // подгоняем высоту изображения
-        var svgHeight = 5 + i * TD + i * Td + Math.abs(dif) + 75;
+        var svgHeight = 5 + inc * TD + inc * Td + Math.abs(dif) + 75;
         // смещаем картину ближе к центру
         var svgTrans;
         if (dif >= 0){
@@ -117,9 +117,9 @@ $(document).ready(function(){
         // рисуем линии отклонений
         var jsonDevLines = [
             { "x1": 50, "y1": 0, "x2": 200, "y2": 0 },
-            { "x1": 50, "y1": i * TD, "x2": 200, "y2": i * TD },
+            { "x1": 50, "y1": inc * TD, "x2": 200, "y2": inc * TD },
             { "x1": 150, "y1": dif, "x2": 300, "y2": dif },
-            { "x1": 150, "y1": dif + i * Td, "x2": 300, "y2": dif + i * Td }
+            { "x1": 150, "y1": dif + inc * Td, "x2": 300, "y2": dif + inc * Td }
         ];
 
         var DevLines = MainGroup.selectAll("DevLines")
@@ -138,10 +138,19 @@ $(document).ready(function(){
         // рисуем значения отклонений
         var jsonDevText = [
             { "x": 100 - 3, "y": 0 - 2, "text_anchor": "end", "txt": "ES = " + ES },
-            { "x": 100 - 3, "y": i * TD - 2, "text_anchor": "end", "txt": "EI = " + EI },
+            { "x": 100 - 3, "y": inc * TD - 2, "text_anchor": "end", "txt": "EI = " + EI },
             { "x": 250 + 3, "y": dif - 2, "text_anchor": "start", "txt": "es = " + es },
-            { "x": 250 + 3, "y": dif + i * Td - 2, "text_anchor": "start", "txt": "ei = " + ei }
+            { "x": 250 + 3, "y": dif + inc * Td - 2, "text_anchor": "start", "txt": "ei = " + ei }
         ];
+
+        // исключаем наложение надписей
+        for (var a in jsonDevText){
+            if (a == 1 || a == 3){
+                if (jsonDevText[a]["y"] - jsonDevText[a - 1]["y"] <= 11){
+                    jsonDevText[a]["y"] = jsonDevText[a]["y"] + 11;
+                }
+            }
+        }
 
         var DevText = MainGroup.selectAll("DevText")
             .data(jsonDevText)
@@ -166,30 +175,30 @@ $(document).ready(function(){
 
         // добавление нужных линий
         if (Smax >= 0 && ES && ei) {
-            jsonClAlLines.push( { "x1": 180, "y1": 0, "x2": 180, "y2": dif + i * Td + 50 } );
-            jsonClAlText.push( { "x": 180 + 2, "y": dif + i * Td + 50, "text_anchor": "start", "txt": "Smax = " + Smax } );
+            jsonClAlLines.push( { "x1": 180, "y1": 0, "x2": 180, "y2": dif + inc * Td + 50 } );
+            jsonClAlText.push( { "x": 180 + 2, "y": dif + inc * Td + 50, "text_anchor": "start", "txt": "Smax = " + Smax } );
             jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 180 + "," + (2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
-            jsonArrows.push( { "type": "triangle-down", "trans": "translate(" + 180 + "," + (dif + i * Td - 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
+            jsonArrows.push( { "type": "triangle-down", "trans": "translate(" + 180 + "," + (dif + inc * Td - 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
         }
 
         if (Smin >= 0 && EI && es) {
-            jsonClAlLines.push( { "x1": 185, "y1": i * TD, "x2": 185, "y2": dif + i * Td + 25 } );
-            jsonClAlText.push( { "x": 185 + 2, "y": dif + i * Td + 25, "text_anchor": "start", "txt": "Smin = " + Smin } );
-            jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 185 + "," + (i * TD + 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
+            jsonClAlLines.push( { "x1": 185, "y1": inc * TD, "x2": 185, "y2": dif + inc * Td + 25 } );
+            jsonClAlText.push( { "x": 185 + 2, "y": dif + inc * Td + 25, "text_anchor": "start", "txt": "Smin = " + Smin } );
+            jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 185 + "," + (inc * TD + 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
             jsonArrows.push( { "type": "triangle-down", "trans": "translate(" + 185 + "," + (dif - 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
         }
 
         if (Nmax >= 0 && es && EI) {
-            jsonClAlLines.push( { "x1": 170, "y1": dif, "x2": 170, "y2": i * TD + 50 } );
-            jsonClAlText.push( { "x": 170 - 2, "y": i * TD + 50, "text_anchor": "end", "txt": "Nmax = " + Nmax } );
+            jsonClAlLines.push( { "x1": 170, "y1": dif, "x2": 170, "y2": inc * TD + 50 } );
+            jsonClAlText.push( { "x": 170 - 2, "y": inc * TD + 50, "text_anchor": "end", "txt": "Nmax = " + Nmax } );
             jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 170 + "," + (dif + 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
-            jsonArrows.push( { "type": "triangle-down", "trans": "translate(" + 170 + "," + (i * TD  - 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
+            jsonArrows.push( { "type": "triangle-down", "trans": "translate(" + 170 + "," + (inc * TD  - 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
         }
 
         if (Nmin >= 0 && ei && ES) {
-            jsonClAlLines.push( { "x1": 165, "y1": dif + i * Td, "x2": 165, "y2": i * TD + 25 } );
-            jsonClAlText.push( { "x": 165 - 2, "y": i * TD + 25, "text_anchor": "end", "txt": "Nmin = " + Nmin } );
-            jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 165 + "," + (dif + i * Td + 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
+            jsonClAlLines.push( { "x1": 165, "y1": dif + inc * Td, "x2": 165, "y2": inc * TD + 25 } );
+            jsonClAlText.push( { "x": 165 - 2, "y": inc * TD + 25, "text_anchor": "end", "txt": "Nmin = " + Nmin } );
+            jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 165 + "," + (dif + inc * Td + 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
             jsonArrows.push( { "type": "triangle-down", "trans": "translate(" + 165 + "," + (- 2.25) + ") scale(" + 0.35 + "," + 0.6 + ")"} );
         }
 
@@ -226,11 +235,11 @@ $(document).ready(function(){
 
         // рисуем нулевую линию и номинальный размер
         var jsonZeroLine = [
-            { "x1": 0, "y1": i * Number(ES), "x2": 300, "y2": i * Number(ES) }
+            { "x1": 0, "y1": inc * Number(ES), "x2": 300, "y2": inc * Number(ES) }
         ];
 
         var jsonZeroText = [
-            { "x": 2, "y": i * Number(ES) - 2, "text_anchor": "start", "fsz": "10pt", "txt": "0" }
+            { "x": 2, "y": inc * Number(ES) - 2, "text_anchor": "start", "fsz": "10pt", "txt": "0" }
         ];
 
 
@@ -238,12 +247,12 @@ $(document).ready(function(){
         if (D){
             var DEnd;
             if (dif >= 0){
-                DEnd = i * Td + Math.abs(dif)
+                DEnd = inc * Td + Math.abs(dif)
             } else {
-                DEnd = i * TD + Math.abs(dif)
+                DEnd = inc * TD + Math.abs(dif)
             }
-            if (DEnd <= i * Number(ES)) {
-                DEnd = DEnd + i * Number(ES)
+            if (DEnd <= inc * Number(ES)) {
+                DEnd = DEnd + inc * Number(ES)
             } else {
                 DEnd = DEnd + 25
             }
@@ -251,9 +260,9 @@ $(document).ready(function(){
                 DEnd = svgHeight - svgTrans - 25
             }
 
-            jsonZeroLine.push( { "x1": 15, "y1": i * Number(ES), "x2": 15, "y2": DEnd } );
+            jsonZeroLine.push( { "x1": 15, "y1": inc * Number(ES), "x2": 15, "y2": DEnd } );
             jsonZeroText.push( { "x": 15 + 2, "y": DEnd, "text_anchor": "start", "fsz": "15pt", "txt": D } );
-            jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 15 + "," + (i * Number(ES) + 4) + ") scale(" + 0.6 + "," + 1 + ")"} );
+            jsonArrows.push( { "type": "triangle-up", "trans": "translate(" + 15 + "," + (inc * Number(ES) + 4) + ") scale(" + 0.6 + "," + 1 + ")"} );
         }
 
         // нулевая линия
@@ -301,8 +310,8 @@ $(document).ready(function(){
 
         // рисуем отверстие и вал
         var jsonHoleShaft = [
-            { "x_axis": 100, "y_axis": 0, "width": 50, "height": i * TD, "color" : "#ffff99" },
-            { "x_axis": 200, "y_axis": 0 + dif, "width": 50, "height": i * Td, "color" : "#999999" }
+            { "x_axis": 100, "y_axis": 0, "width": 50, "height": inc * TD, "color" : "#ffff99" },
+            { "x_axis": 200, "y_axis": 0 + dif, "width": 50, "height": inc * Td, "color" : "#999999" }
         ];
 
         var HoleShaft = MainGroup.selectAll("HoleShaft")
@@ -324,8 +333,8 @@ $(document).ready(function(){
         var jsonTolText = [];
 
         if (TD != 0 && Td != 0) {
-            jsonTolText.push( { "x": 125, "y": i * TD / 2 + 6, "txt": QHoleKey + zHole });
-            jsonTolText.push( { "x": 225, "y": i * Td / 2 + 6 + dif, "txt": QShaftKey + zShaft });
+            jsonTolText.push( { "x": 125, "y": inc * TD / 2 + 6, "txt": QHoleKey + zHole });
+            jsonTolText.push( { "x": 225, "y": inc * Td / 2 + 6 + dif, "txt": QShaftKey + zShaft });
         }
 
         var TolText = MainGroup.selectAll("TolText")
@@ -344,7 +353,7 @@ $(document).ready(function(){
             .text(function (d) { return d.txt; });
     }
 
-    function convertToPNG(){
+    function saveAsPNG(){
         var svg = d3.select("svg")[0][0],
             img = new Image(),
             serializer = new XMLSerializer(),
@@ -363,10 +372,17 @@ $(document).ready(function(){
         canvas.height = h;
         canvas.getContext("2d").drawImage(img, 0, 0, w, h);
 
-        var parentChart = $(".chart");
+        img.onload = function() {
+            var canvasData = canvas.toDataURL("image/png");
 
-        parentChart.empty();
-        parentChart.append(canvas);
+            var png_img = '<img src="' + canvasData + '">';
+            d3.select("#pngdataurl").html(png_img);
+
+            var a = document.createElement("a");
+            a.download = "sample.png";
+            a.href = canvasData;
+            a.click();
+        };
     }
 
     function warning(){
@@ -385,9 +401,10 @@ $(document).ready(function(){
             if (ES && EI && es && ei && $('.TD').text() && $('.Td').text()) {
                 if ((Number(ES) > Number(EI)) && (Number(es) > Number(ei))){
                     draw();
-                    if (navigator.userAgent.search("Firefox") == -1){
-                        convertToPNG();
-                    }
+                    parentChart
+                        .attr('data-placement', "top")
+                        .attr('title', "Нажмите на график, чтобы сохранить изображение на диск");
+                    parentChart.tooltip();
                 } else {
                     warningMessage.text('Невозможно построить диаграмму: данные введены неверно');
                     warning()
@@ -398,5 +415,9 @@ $(document).ready(function(){
                 warning()
             }
         }
+    });
+
+    parentChart.click( function() {
+        saveAsPNG()
     });
 });
