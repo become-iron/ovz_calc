@@ -11,3 +11,11 @@ td {
     padding-left: 10px;
     color: #337AB7;
 }
+.form-control, select.input-sm {
+    width: 140px;
+    height: 25px;
+}
+
+.btn.btn-xs {
+    font-size: 14px;
+}

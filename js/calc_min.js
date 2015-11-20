@@ -52,15 +52,13 @@ $(document).ready(function() {
     code +=
             '<tr>' +
             '<td>D</td>' +
-            '<td><input type="number" min="1" max="500" step="1" class="D form-control input-sm"></td>' +
-            //'<td>Номинальный размер</td>' +
+            '<td><input type="number" min="1" max="500" step="1" class="D form-control input-sm" autofocus></td>' +
             '</tr>';
     for (var k = 0; k < fields.length; k++) {
         code +=
             '<tr>' +
             '<td>' + fields[k][1] + '</td>' +
             '<td><select class="' + fields[k][0] + ' form-control input-sm"></select></td>' +
-            //'<td>' + fields[k][1] + '</td>' +
             '</tr>'
     }
     code +=
@@ -75,8 +73,6 @@ $(document).ready(function() {
             '<tr>' +
             '<td>' + inputs[i][0] + '<span class="glyphicon glyphicon-info-sign text-right toolt" data-toggle="tooltip" data-placement="right" title="' + inputs[i][1] + '"></span></td>' +
             '<td><div class="' + inputs[i][0] + '"></td>' +
-            //'<td>' + inputs[i][1] + '</td>' +
-            //'<td>' + inputs[i][2] + '</td>' +
             '</tr>';
     }
     for (var j = 0; j < add_fields.length; j++) {
@@ -266,9 +262,9 @@ $(document).ready(function() {
         // определение посадки
         if ($('.Smin').text() === '0') {$('.fit').text('скользящая')}
         else if ($('.Nmin').text() === '0') {$('.fit').text('легко прессовая')}
-        else if ( $('.Nmax').val() > 0 ) {$('.fit').text('переходная')}
-        else if ($('.Smin').text() > 0) {$('.fit').text('с зазором')}
-        else if ($('.Nmin').text() > 0) {$('.fit').text('с натягом')}
+        else if ( $('.Nmax').text() > 0 ) {$('.fit').text('переходная')}
+        else if ($('.Smin').text() > 0) {$('.fit').text('с гарант. зазором')}
+        else if ($('.Nmin').text() > 0) {$('.fit').text('с гарант. натягом')}
         else {$('.fit').text('неизвестна')}
 
         // определение системы (отверстия или вала)
@@ -300,7 +296,6 @@ $(document).ready(function() {
             $('.graph').css('display', 'none');
         }
     });
-
 
 
 });

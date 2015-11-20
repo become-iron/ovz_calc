@@ -56,15 +56,15 @@ $(document).ready(function(){
         '<td>D</td>' +
         '<td><input type="number" min="1" max="500" step="1" class="field D form-control input-sm" autofocus></td>' +
         '<td>Номинальный размер</td>' +
-        '<td></td>' +
+        '<td>&nbsp;</td>' +
         '</tr>';
     for (i = 0; i < fields.length; i++) {
         code +=
             '<tr>' +
-                '<td></td>' +
+                '<td>&nbsp;</td>' +
                 '<td><select class="' + fields[i][0] + ' form-control input-sm"></select></td>' +
                 '<td>' + fields[i][1] + '</td>' +
-                '<td></td>' +
+                '<td>&nbsp;</td>' +
             '</tr>'
     }
     for (i = 0; i < inputs.length; ++i){
@@ -81,8 +81,8 @@ $(document).ready(function(){
             '<tr>' +
                 '<td>' + add_fields[i][1] + '</td>' +
                 '<td><div class="' + add_fields[i][0] + '">' + add_fields[i][2] + '</div></td>' +
-                '<td></td>' +
-                '<td></td>' +
+                '<td>&nbsp;</td>' +
+                '<td>&nbsp;</td>' +
             '</tr>';
     }
     $('table').append(code);
@@ -297,7 +297,7 @@ $(document).ready(function(){
 
     // клик по кнопке сброса
     $('.reset').click( function() {
-        $('.graph').css('visibility', 'hidden');
+        $('.graph').css('display', 'none');
         $('.fit').text('неизвестна');
         $('.sys_fit').text('неизвестна');
         $(nmFldZoneHole).prop("disabled", true);
@@ -305,11 +305,11 @@ $(document).ready(function(){
     });
 
     $(".plot").click( function() {
-        if ($('.graph').css('visibility') === 'hidden') {
-            $('.graph').css('visibility', 'visible');
+        if ($('.graph').css('display') === 'none') {
+            $('.graph').css('display', 'block');
         }
         else {
-            $('.graph').css('visibility', 'hidden');
+            $('.graph').css('display', 'none');
         }
     });
  });

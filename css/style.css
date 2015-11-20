@@ -4,7 +4,7 @@
 }
 
 .graph{
-    visibility: hidden;
+    display: none;
     background-color: #ffe7ce;
     margin-top: 15px;
     padding: 10px;
