@@ -161,8 +161,8 @@ $(document).ready(function(){
             csvtable += '\n';
         }
 
-        csvtable += "Посадка," + fit + '\n';
-        csvtable += "Система," + sys_fit + '\n';
+        csvtable += "Посадка;" + fit + '\n';
+        csvtable += "Система;" + sys_fit + '\n';
         let blob = new Blob([csvtable], {type: "text/csv;charset=utf-8"});
         saveAs(blob, "table.csv")
     }
