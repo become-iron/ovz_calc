@@ -151,12 +151,12 @@ $(document).ready(function(){
         if (csv['EI'][1] === 0) {sys_fit = 'отверстия'}
         else if (csv['es'][1] === 0) {sys_fit = 'вала'}
 
-        let csvtable = "";
+        let csvtable = "sep=;\n";
         let arr = Object.values(csv);
         for(let i = 0; i < arr.length; ++i){
             let row = arr[i];
             for(let j = 0; j < row.length; ++j){
-                csvtable += row[j] + ', '
+                csvtable += row[j] + '; '
             }
             csvtable += '\n';
         }
