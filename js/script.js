@@ -132,6 +132,41 @@ $(document).ready(function(){
         }
 	}
 
+
+    function produceCSV() {
+        calc();
+        let csv = {};
+        for(let i = 0; i < inputs.length; ++i){
+            csv[inputs[i][0]] = [inputs[i][0], calculate(inputs[i][2]), inputs[i][1], inputs[i][2]];
+        }
+
+        let fit = "неизвестна";
+        if (csv['Smin'][1] === 0) { fit = 'скользящая'}
+        else if (csv['Nmin'][1] === 0) {fit = 'легко прессовая'}
+        else if (csv['Nmax'][1] > 0 ) {fit = 'переходная'}
+        else if (csv['Smin'][1] > 0) {fit = 'с гарант. зазором'}
+        else if (csv['Nmin'][1] > 0) {fit = 'с гарант. натягом'}
+
+        let sys_fit = "неизвеста";
+        if (csv['EI'][1] === 0) {sys_fit = 'отверстия'}
+        else if (csv['es'][1] === 0) {sys_fit = 'вала'}
+
+        let csvtable = "";
+        let arr = Object.values(csv);
+        for(let i = 0; i < arr.length; ++i){
+            let row = arr[i];
+            for(let j = 0; j < row.length; ++j){
+                csvtable += row[j] + ','
+            }
+            csvtable += '\n';
+        }
+
+        csvtable += "Посадка," + fit + '\n';
+        csvtable += "Система," + sys_fit + '\n';
+        let blob = new Blob([csvtable], {type: "text/csv;charset=utf-8"});
+        saveAs(blob, "table.csv")
+    }
+
     function calc() {
         for (var i = 0; i < inputs.length; ++i) {
             fieldName = '.' + inputs[i][0];
@@ -293,6 +328,10 @@ $(document).ready(function(){
                 $(fieldName).css('background-color', '#ff988a');
             }
         }
+    });
+
+    $('.csv').click(function () {
+        produceCSV()
     });
 
     // клик по кнопке сброса
